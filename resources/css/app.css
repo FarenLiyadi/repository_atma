@@ -1,0 +1,295 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add this to your CSS */
+button:disabled {
+    background-color: rgba(
+        59,
+        130,
+        246,
+        0.7
+    ); /* Adjust the opacity to your desired level */
+    cursor: not-allowed;
+}
+
+button:disabled:hover {
+    background-color: rgba(
+        59,
+        130,
+        246,
+        0.7
+    ); /* Adjust the opacity to your desired level */
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #888;
+    border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.header-text {
+    font-size: 1.87rem;
+    font-weight: 800;
+}
+
+.hint-text {
+    font-size: 1rem;
+}
+
+.table-header-text {
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+
+@media screen and (max-width: 480px) {
+    .header-text {
+        font-size: 1.25rem;
+    }
+
+    .hint-text {
+        font-size: 0.8rem;
+    }
+
+    .table-header-text {
+        font-size: 0.875rem;
+    }
+}
+
+@media print {
+    @page {
+        /* size: 9cm 16.9cm; */
+        margin: 0;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .print-container {
+        /* width: 9cm;
+        height: 16.9cm; */
+        box-sizing: border-box;
+    }
+}
+
+html {
+    @apply text-[#797979] font-cormorant;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@font-face {
+    font-family: "Gardenia Summer";
+    font-weight: normal;
+    src: url("/font/Gardenia-Summer.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "MeathFLF";
+    font-weight: normal;
+    src: url("/font/MeathFLF.ttf") format("truetype");
+}
+
+.bg-hero {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: all 0.3s ease;
+    animation: bgHero 10s infinite ease-in-out;
+}
+
+@keyframes bgHero {
+    0% {
+        background-image: url(/img/1.jpg);
+        scale: 1.1;
+    }
+    30% {
+        background-image: url(/img/2.jpg);
+        scale: 1;
+    }
+    60% {
+        background-image: url(/img/3.jpg);
+        scale: 1.1;
+    }
+    100% {
+        background-image: url(/img/1.jpg);
+        scale: 1;
+    }
+}
+
+.bg-date {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: all 0.3s ease;
+    animation: bgDate 10s infinite ease-in-out;
+}
+
+@keyframes bgDate {
+    0% {
+        background-image: url(/img/8.jpg);
+        scale: 1.1;
+    }
+    50% {
+        background-image: url(/img/9.jpg);
+        scale: 1;
+    }
+    100% {
+        background-image: url(/img/8.jpg);
+        scale: 1.1;
+    }
+}
+
+.bg-lovestory {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: all 0.3s ease;
+    animation: bgLoveStory 10s infinite ease-in-out;
+}
+
+@keyframes bgLoveStory {
+    0% {
+        background-image: url(/img/love1.jpg);
+        scale: 1.1;
+    }
+    30% {
+        background-image: url(/img/love2.jpg);
+        scale: 1;
+    }
+    60% {
+        background-image: url(/img/love3.jpg);
+        scale: 1.1;
+    }
+    100% {
+        background-image: url(/img/love1.jpg);
+        scale: 1.1;
+    }
+}
+
+.bg-join {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: all 0.3s ease;
+    animation: bgJoin 10s infinite ease-in-out;
+}
+
+@keyframes bgJoin {
+    0% {
+        background-image: url(/img/join1.jpg);
+        scale: 1.1;
+    }
+    50% {
+        background-image: url(/img/join2.jpg);
+        scale: 1;
+    }
+    100% {
+        background-image: url(/img/join1.jpg);
+        scale: 1.1;
+    }
+}
+
+.bg-gallery {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: all 0.3s ease;
+    animation: bgGallery 10s infinite ease-in-out;
+}
+
+@keyframes bgGallery {
+    0% {
+        background-image: url(/img/love1.jpg);
+        scale: 1.1;
+    }
+    50% {
+        background-image: url(/img/love3.jpg);
+        scale: 1;
+    }
+    100% {
+        background-image: url(/img/love1.jpg);
+        scale: 1.1;
+    }
+}
+
+.custom-shadow1 {
+    box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 0.3);
+}
+
+.custom-shadow2 {
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
+}
+
+.custom-shadow3 {
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
+}
+
+.text-shadow1 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.bg-wish {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url(/img/join2.jpg);
+}
+
+.wish-item {
+    position: relative;
+    margin-left: 4px;
+}
+
+.wish-item::before {
+    border-width: 10px 10px 10px 0;
+    border-style: solid;
+    border-color: transparent #fcfcfc;
+    content: "";
+    left: -7px;
+    position: absolute;
+    top: 9px;
+}
