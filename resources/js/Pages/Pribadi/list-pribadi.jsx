@@ -247,7 +247,7 @@ export default function listpribadi({ auth }) {
                         <h2 className="text-3xl text-dark font-extrabold">
                             Daftar pribadi
                         </h2>
-                        <div className="pt-4 table-auto text-dark w-full">
+                        <div className="pt-4 table-auto text-dark w-full overflow-auto">
                             <table className="border-collapse w-full border border-slate-500">
                                 <thead>
                                     <tr>

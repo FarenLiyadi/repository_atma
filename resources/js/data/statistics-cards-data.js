@@ -5,9 +5,6 @@ import {
     ChartBarIcon,
 } from "@heroicons/react/24/solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { fabuildinguser } from "@awesome.me/kit-KIT_CODE/icons/classic/solid";
-import { faCat } from "@awesome.me/kit-KIT_CODE/icons/sharp/solid";
-import { faDog } from "@awesome.me/kit-KIT_CODE/icons/sharp-duotone/solid";
 
 export const statisticsCardsData = [
     {

@@ -209,16 +209,16 @@ export default function listpenelitian({ auth }) {
 
             <div className="py-5">
                 <div className="mx-auto sm:px-6 lg:px-8 space-y-6">
-                    <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                        <h1 className="text-right text-3xl font-bold">
-                            Data Penelitian
+                    <div className="flex flex-col p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                        <h1 className="md:text-right text-center text-3xl font-bold">
+                            Data Penunjang
                         </h1>
-                        <div>
+                        <div className="">
                             <label className="text-dark font-bold text-2xl">
                                 Pencarian
                             </label>
-                            <div className="my-2 grid grid-flow-col auto-cols-max gap-2">
-                                <div className="">
+                            <div className="my-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <div>
                                     <label
                                         htmlFor="nama"
                                         className="block mb-2 font-medium text-gray-900 dark:text-dark"
@@ -236,7 +236,7 @@ export default function listpenelitian({ auth }) {
                                         }}
                                     />
                                 </div>
-                                <div className="">
+                                <div>
                                     <label
                                         htmlFor="tahun"
                                         className="block mb-2 font-medium text-gray-900 dark:text-dark"
@@ -259,11 +259,11 @@ export default function listpenelitian({ auth }) {
                                         htmlFor="aktor"
                                         className="block mb-2 font-medium text-gray-900 dark:text-dark"
                                     >
-                                        semester
+                                        Semester
                                     </label>
                                     <select
                                         id="aktor"
-                                        className="src_change bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-48 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-dark dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        className="src_change bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full lg:w-48 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-dark dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         onChange={(role) => {
                                             setRole(role.target.value);
                                             setPage(1);
@@ -286,7 +286,7 @@ export default function listpenelitian({ auth }) {
                         <h2 className="text-3xl text-dark font-extrabold">
                             Daftar penelitian
                         </h2>
-                        <div className="pt-4 table-auto text-dark w-full">
+                        <div className="pt-4 overflow-auto table-auto text-dark w-full">
                             <table className="border-collapse w-full border border-slate-500">
                                 <thead>
                                     <tr>

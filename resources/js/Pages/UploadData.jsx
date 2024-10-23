@@ -169,35 +169,35 @@ export default function UploadData({ auth }) {
                             <ul className="uppercase text-red-900 list-disc list-inside">
                                 <li>
                                     data pengabdian, penelitian, penunjang
-                                    format file harus PDF{" "}
+                                    format file harus PDF
                                 </li>
                                 <li>
                                     data pribadi format file harus
-                                    JPG/DOCS/XLSX/CSV/PDF{" "}
+                                    JPG/DOCS/XLSX/CSV/PDF
                                 </li>
                                 <li>Max size per file hanya 10 Mb</li>
                             </ul>
                         </div>
                         <div>
                             <form onSubmit={submitHandler}>
-                                <div className="my-2 grid grid-flow-row auto-rows-max justify-center gap-4">
+                                <div className="my-2 grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <label
                                             htmlFor="jenisdata"
                                             className="block mb-2 font-medium text-gray-900 dark:text-white"
                                         >
-                                            jenis data
+                                            Jenis Data
                                         </label>
                                         <select
                                             id="jenisdata"
                                             required
-                                            className="src_change w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            className="src_change w-full md:w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             value={jenisdata}
-                                            onChange={(event) => {
+                                            onChange={(event) =>
                                                 change_jenisdata(
                                                     event.target.value
-                                                );
-                                            }}
+                                                )
+                                            }
                                         >
                                             <option disabled selected value>
                                                 Pilih jenis data
@@ -212,24 +212,25 @@ export default function UploadData({ auth }) {
                                             <option value="4">Pribadi</option>
                                         </select>
                                     </div>
+
                                     <div>
                                         <label
                                             htmlFor="judul_data"
                                             className="block mb-2 font-medium text-gray-900 dark:text-white"
                                         >
-                                            judul data
+                                            Judul Data
                                         </label>
                                         <input
                                             type="text"
                                             id="judul_data"
-                                            placeholder="judul data"
-                                            className="src_change w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            placeholder="Judul data"
+                                            className="src_change w-full md:w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             value={judul_data}
-                                            onChange={(event) => {
+                                            onChange={(event) =>
                                                 setjudul_data(
                                                     event.target.value
-                                                );
-                                            }}
+                                                )
+                                            }
                                             required
                                         />
                                         {errors.judul_data && (
@@ -238,27 +239,27 @@ export default function UploadData({ auth }) {
                                             </div>
                                         )}
                                     </div>
+
                                     {jenisdata != 4 && (
-                                        <div className="">
+                                        <>
                                             <div>
                                                 <label
                                                     htmlFor="tahun_data"
                                                     className="block mb-2 font-medium text-gray-900 dark:text-white"
                                                 >
-                                                    tahun data
+                                                    Tahun Data
                                                 </label>
                                                 <input
                                                     type="text"
                                                     id="tahun_data"
-                                                    placeholder="tahun data"
-                                                    autoComplete=""
-                                                    className="src_change w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    placeholder="Tahun data"
+                                                    className="src_change w-full md:w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                     value={tahun_data}
-                                                    onChange={(event) => {
+                                                    onChange={(event) =>
                                                         settahun_data(
                                                             event.target.value
-                                                        );
-                                                    }}
+                                                        )
+                                                    }
                                                     required
                                                 />
                                             </div>
@@ -268,18 +269,18 @@ export default function UploadData({ auth }) {
                                                     htmlFor="semester"
                                                     className="block mb-2 font-medium text-gray-900 dark:text-white"
                                                 >
-                                                    semester
+                                                    Semester
                                                 </label>
                                                 <select
                                                     id="semester"
                                                     required
-                                                    className="src_change w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    className="src_change w-full md:w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                     value={semester}
-                                                    onChange={(event) => {
+                                                    onChange={(event) =>
                                                         change_semester(
                                                             event.target.value
-                                                        );
-                                                    }}
+                                                        )
+                                                    }
                                                 >
                                                     <option
                                                         disabled
@@ -299,7 +300,7 @@ export default function UploadData({ auth }) {
                                                     </option>
                                                 </select>
                                             </div>
-                                        </div>
+                                        </>
                                     )}
 
                                     <div>
@@ -312,16 +313,16 @@ export default function UploadData({ auth }) {
                                         <select
                                             id="show"
                                             required
-                                            className="src_change w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            className="src_change w-full md:w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             value={permission}
-                                            onChange={(event) => {
+                                            onChange={(event) =>
                                                 change_permission(
                                                     event.target.value
-                                                );
-                                            }}
+                                                )
+                                            }
                                         >
                                             <option disabled selected value>
-                                                choose permission
+                                                Choose permission
                                             </option>
                                             <option value="1">Show</option>
                                             <option value="2">Hide</option>
@@ -338,8 +339,7 @@ export default function UploadData({ auth }) {
                                         <input
                                             type="file"
                                             id="selectedFile"
-                                            placeholder="selectedFile"
-                                            className="src_change w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            className="src_change w-full md:w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             onChange={handleFileChange}
                                             required
                                         />
@@ -350,7 +350,7 @@ export default function UploadData({ auth }) {
                                         )}
                                     </div>
 
-                                    <div className="pt-5">
+                                    <div className="pt-5 w-full md:col-span-2">
                                         <button
                                             type="submit"
                                             className="text-white w-full bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-green-800"
