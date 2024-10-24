@@ -17,6 +17,7 @@ class Penunjang extends Model
         'judul_data',
         'tahun_data',
         'semester',
+        'deleted_by',
         'permission'
 
     ];
@@ -24,5 +25,9 @@ class Penunjang extends Model
     public function User()
     {
         return $this->belongsTo(User::class,'user_id');
+    }
+    public function Deleted_by()
+    {
+        return $this->belongsTo(User::class,'deleted_by');
     }
 }

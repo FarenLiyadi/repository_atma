@@ -15,6 +15,7 @@ class Pribadi extends Model
         'user_id',
         'link_pribadi',
         'judul_data',
+        'deleted_by',
         'permission'
 
     ];
@@ -22,5 +23,9 @@ class Pribadi extends Model
     public function User()
     {
         return $this->belongsTo(User::class,'user_id');
+    }
+    public function Deleted_by()
+    {
+        return $this->belongsTo(User::class,'deleted_by');
     }
 }

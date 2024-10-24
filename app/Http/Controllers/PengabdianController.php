@@ -253,6 +253,11 @@ class PengabdianController extends Controller
             $user->update($updateData);
             $user->save();
 
+            $actor = Auth::user()->id;
+            $updateData2['deleted_by'] = $actor; 
+            $itemInfo->update($updateData2);
+            $itemInfo->save();
+
             $itemInfo->delete();  
 
             $this->code = 0;

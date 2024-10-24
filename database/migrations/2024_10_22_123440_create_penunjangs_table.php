@@ -20,10 +20,12 @@ return new class extends Migration
             $table->string('tahun_data');
             $table->tinyInteger('semester')->comment('1 awal, 2 akhir, 3 pendek');
             $table->tinyInteger('permission')->comment('1 visible, 2 invisible');
+            $table->char('deleted_by', 36)->nullable();
            
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('deleted_by')->references('id')->on('users');
         });
     }
 

@@ -263,6 +263,9 @@ export default function listDeleted({ auth }) {
                                             Tgl. deleted
                                         </th>
                                         <th className="border border-slate-600 text-xl py-2">
+                                            Del. By
+                                        </th>
+                                        <th className="border border-slate-600 text-xl py-2">
                                             Jenis data
                                         </th>
                                     </tr>
@@ -332,6 +335,9 @@ export default function listDeleted({ auth }) {
                                                             year: "numeric",
                                                         }
                                                     )}
+                                                </td>
+                                                <td className="text-center border border-slate-700 px-3">
+                                                    {user.deleted_by.username}
                                                 </td>
                                                 <td className="text-center border border-slate-700">
                                                     <td className="text-center">

@@ -141,29 +141,29 @@ class UserController extends Controller
 
             $offset     = $length * ($page - 1);
             if ($jenisData==0){
-                $itemInfo1 = Pengabdian::onlyTrashed()->with(['user'])->get();
-                $itemInfo2 = Pribadi::onlyTrashed()->with(['user'])->get();
-                $itemInfo3 = Penelitian::onlyTrashed()->with(['user'])->get();
-                $itemInfo4 = Penunjang::onlyTrashed()->with(['user'])->get();
+                $itemInfo1 = Pengabdian::onlyTrashed()->with(['user','Deleted_by:id,username'])->get();
+                $itemInfo2 = Pribadi::onlyTrashed()->with(['user','Deleted_by:id,username'])->get();
+                $itemInfo3 = Penelitian::onlyTrashed()->with(['user','Deleted_by:id,username'])->get();
+                $itemInfo4 = Penunjang::onlyTrashed()->with(['user','Deleted_by:id,username'])->get();
                 $itemInfo = collect()
                 ->merge($itemInfo1)
                 ->merge($itemInfo2)
                 ->merge($itemInfo3)
                 ->merge($itemInfo4);
             } elseif($jenisData=="1"){
-                $itemInfo1 = Pengabdian::onlyTrashed()->with(['user'])->get();
+                $itemInfo1 = Pengabdian::onlyTrashed()->with(['user','Deleted_by:id,username'])->get();
                 $itemInfo = collect()
                 ->merge($itemInfo1);
             }elseif($jenisData=="2"){
-                $itemInfo1 = Penelitian::onlyTrashed()->with(['user'])->get();
+                $itemInfo1 = Penelitian::onlyTrashed()->with(['user','Deleted_by:id,username'])->get();
                 $itemInfo = collect()
                 ->merge($itemInfo1);
             }elseif($jenisData=="3"){
-                $itemInfo1 = Penunjang::onlyTrashed()->with(['user'])->get();
+                $itemInfo1 = Penunjang::onlyTrashed()->with(['user','Deleted_by:id,username'])->get();
                 $itemInfo = collect()
                 ->merge($itemInfo1);
             }elseif($jenisData=="4"){
-                $itemInfo1 = Pribadi::onlyTrashed()->with(['user'])->get();
+                $itemInfo1 = Pribadi::onlyTrashed()->with(['user','Deleted_by:id,username'])->get();
                 $itemInfo = collect()
                 ->merge($itemInfo1);
             }

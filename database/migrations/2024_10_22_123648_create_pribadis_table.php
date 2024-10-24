@@ -18,10 +18,11 @@ return new class extends Migration
             $table->string('judul_data');
             $table->string('link_pribadi');
             $table->tinyInteger('permission')->comment('1 visible, 2 invisible');
-           
+            $table->char('deleted_by', 36)->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('deleted_by')->references('id')->on('users');
         });
     }
 

@@ -17,12 +17,17 @@ class Penelitian extends Model
         'judul_data',
         'tahun_data',
         'semester',
-        'permission'
+        'permission',
+        'deleted_by',
 
     ];
 
     public function User()
     {
         return $this->belongsTo(User::class,'user_id');
+    }
+    public function Deleted_by()
+    {
+        return $this->belongsTo(User::class,'deleted_by');
     }
 }

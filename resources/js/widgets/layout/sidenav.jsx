@@ -214,7 +214,7 @@ export function Sidenav() {
                                         color="inherit"
                                         className="font-medium capitalize"
                                     >
-                                        List deleted
+                                        List File deleted
                                     </Typography>
                                 </Button>
                             </a>
