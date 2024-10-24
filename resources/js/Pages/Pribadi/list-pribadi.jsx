@@ -15,6 +15,7 @@ export default function listpribadi({ auth }) {
     const [tahun, setTahun] = useState("");
     const [username, setUsername] = useState("");
     const [dataListUser, setDataListUser] = useState({ item: [], total: 0 });
+
     const [counter, setCounter] = useState(1);
 
     async function search() {
@@ -247,7 +248,7 @@ export default function listpribadi({ auth }) {
                         <h2 className="text-3xl text-dark font-extrabold">
                             Daftar pribadi
                         </h2>
-                        <div className="pt-4 table-auto text-dark w-full overflow-auto">
+                        <div className="pt-4 table-auto text-dark w-full ">
                             <table className="border-collapse w-full border border-slate-500">
                                 <thead>
                                     <tr>

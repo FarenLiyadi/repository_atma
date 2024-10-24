@@ -286,7 +286,7 @@ export default function listpenelitian({ auth }) {
                         <h2 className="text-3xl text-dark font-extrabold">
                             Daftar penelitian
                         </h2>
-                        <div className="pt-4 overflow-auto table-auto text-dark w-full">
+                        <div className="pt-4  table-auto text-dark w-full">
                             <table className="border-collapse w-full border border-slate-500">
                                 <thead>
                                     <tr>
@@ -401,26 +401,30 @@ export default function listpenelitian({ auth }) {
 
                                                             <Dropdown.Content>
                                                                 <div className="relative z-50">
-                                                                    <p
-                                                                        onClick={(
-                                                                            event
-                                                                        ) =>
-                                                                            updatePengabdian(
-                                                                                event,
-                                                                                user.id
-                                                                            )
-                                                                        }
-                                                                        className={
-                                                                            "block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out "
-                                                                        }
-                                                                    >
-                                                                        change
-                                                                        to{" "}
-                                                                        {user.permission ===
-                                                                        1
-                                                                            ? "Hide"
-                                                                            : "Show"}
-                                                                    </p>
+                                                                    {auth.user
+                                                                        .id ==
+                                                                        user.user_id && (
+                                                                        <p
+                                                                            onClick={(
+                                                                                event
+                                                                            ) =>
+                                                                                updatePengabdian(
+                                                                                    event,
+                                                                                    user.id
+                                                                                )
+                                                                            }
+                                                                            className={
+                                                                                "block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out "
+                                                                            }
+                                                                        >
+                                                                            change
+                                                                            to{" "}
+                                                                            {user.permission ===
+                                                                            1
+                                                                                ? "Hide"
+                                                                                : "Show"}
+                                                                        </p>
+                                                                    )}
                                                                     <a
                                                                         href={`file/${user.id}`}
                                                                         className={

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengabdian;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,13 +24,14 @@ class PengabdianController extends Controller
     public function listPengabdian(Request $request){
         $auth = Auth::user()->id;
         $akses = Auth::user()->roles;
-        Log::info($auth);
+
         $length     = $request->input('length', 10);
         $page       = $request->input('page', 1);
         $username   = $request->input('username');
         $roles      = $request->input('roles');
         $tahun      = $request->input('tahun');
-
+        
+        
         $validator = Validator::make($request->all(), [
             'length'    => 'required|integer|min:1|max:100',
             'page'      => 'required|integer|min:1',
@@ -45,24 +47,32 @@ class PengabdianController extends Controller
 
             $offset     = $length * ($page - 1);
             $itemInfo   = Pengabdian::query()->whereNull('deleted_at')->with(['user']);
-           if ($akses !== 1) {
-                // $itemInfo   = Pengabdian::query()->whereNull('deleted_at')->with(['user']);
-                $itemInfo->where('permission','1')->orWhere('user_id',$auth);
-            }
-            
 
-            if ($username) { $itemInfo->where('judul_data', 'LIKE', "$username%"); }
-            if ($tahun) { $itemInfo->where('tahun_data', 'LIKE', "$tahun%"); }
-            
+
+
+            if ($akses !== "1") {
+                $itemInfo->where(function ($query) use ($auth) {
+                    $query->where('permission', '1')
+                          ->orWhere('user_id', $auth);
+                });
+            }
+            if ($username) { $itemInfo->where('judul_data', 'LIKE', "%$username%"); }
+       
+            if ($tahun) { $itemInfo->where('tahun_data', 'LIKE', "%$tahun%"); }
+           
+            // Log::info($itemInfo);
             switch (intval($roles)) {
                 case 1:
                     $itemInfo->where('semester', 1);
+                    // $itemInfo2->where('semester', 1);
                     break;
                 case 2:
                     $itemInfo->where('semester', 2);
+                    // $itemInfo2->where('semester', 2);
                     break;
                 case 3:
                     $itemInfo->where('semester', 3);
+                    // $itemInfo2->where('semester', 3);
                     break;
                
                 default:
@@ -74,6 +84,7 @@ class PengabdianController extends Controller
             $response = [
                 "total" => $itemInfo->count(),
                 "item"  => $itemInfo->orderByDesc('created_at')->skip($offset)->take($length)->get(),
+                // "item2"  => $itemInfo2->orderByDesc('created_at')->skip($offset)->take($length)->get(),
                 
             ];
             
@@ -159,7 +170,7 @@ class PengabdianController extends Controller
                 }
             }
 
-           
+            
             $itemInfo->update($updateData);
             $itemInfo->save();
           
@@ -176,6 +187,8 @@ class PengabdianController extends Controller
 
     public function deletePengabdian(Request $request){
         $itemId     = $request->input('item_id');
+        $roles = Auth::user()->roles;
+        $id = Auth::user()->id;
         $validator = Validator::make($request->all(), [
        
             'item_id'       => 'required|string|min:36|max:36',
@@ -187,13 +200,20 @@ class PengabdianController extends Controller
                 throw new Exception($validator->errors()->first());
             }
 
-           
-
+            
             $itemInfo = Pengabdian::where('id', $itemId)->where('deleted_at', null)->first();
+
+            if( $roles !== 1 && $itemInfo->user_id !== $id){
+                $this->code = 303;
+                throw new Exception($this->getErrorMessage($this->code));
+            }
+
             if (!$itemInfo){
                 $this->code = 104;
                 throw new Exception($this->getErrorMessage($this->code));
             }
+
+            $fileSize = null; // Initialize file size variable
             if($itemInfo->permission === 1){
 
                 // permission is show
@@ -204,8 +224,10 @@ class PengabdianController extends Controller
                 // Log::info('File exists: ' . (Storage::disk('public')->exists($relativeFilePath) ? 'true' : 'false'));
 
                 if (Storage::disk('public')->exists($relativeFilePath)) {
-                Storage::disk('public')->exists($relativeFilePath) and Storage::disk('public')->delete($relativeFilePath);
-                Storage::delete($relativeFilePath);
+                    $fileSize = Storage::disk('public')->size($relativeFilePath);
+                // Storage::disk('public')->exists($relativeFilePath) and Storage::disk('public')->delete($relativeFilePath);
+                // Storage::delete($relativeFilePath);
+                Storage::disk('public')->delete($relativeFilePath);
             } else {
                 return response()->json(['error' => 'File not found'], 404);
             }
@@ -215,9 +237,10 @@ class PengabdianController extends Controller
                 $relativeFilePath = '/uploads/'.$filePath;
                 // Log::info('File path: ' . $relativeFilePath);
                 // Log::info('File exists: ' . (Storage::disk('private')->exists($relativeFilePath) ? 'true' : 'false'));
-        
-                    if (Storage::disk('private')->exists($relativeFilePath)) {
+                
+                if (Storage::disk('private')->exists($relativeFilePath)) {
                     // Delete the file
+                    $fileSize = Storage::disk('private')->size($relativeFilePath);
                     Storage::disk('private')->delete($relativeFilePath);
                 } else {
                     return response()->json(['error' => 'File not found'], 404);
@@ -225,6 +248,11 @@ class PengabdianController extends Controller
             }
 
             
+            $user = User::where('id',$itemInfo->user_id)->first();
+            $updateData['usage'] = $user->usage - round($fileSize / (1024 * 1024 * 1024),4); 
+            $user->update($updateData);
+            $user->save();
+
             $itemInfo->delete();  
 
             $this->code = 0;

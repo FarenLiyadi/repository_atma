@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Penelitian;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,14 +46,16 @@ class PenelitianController extends Controller
 
             $offset     = $length * ($page - 1);
             $itemInfo   = Penelitian::query()->whereNull('deleted_at')->with(['user']);
-            if ($akses !== 1) {
-                // $itemInfo   = Penelitian::query()->whereNull('deleted_at')->with(['user']);
-                $itemInfo->where('permission','1')->orWhere('user_id',$auth);
+            if ($akses !== "1") {
+                $itemInfo->where(function ($query) use ($auth) {
+                    $query->where('permission', '1')
+                          ->orWhere('user_id', $auth);
+                });
             }
             
 
-            if ($username) { $itemInfo->where('judul_data', 'LIKE', "$username%"); }
-            if ($tahun) { $itemInfo->where('tahun_data', 'LIKE', "$tahun%"); }
+            if ($username) { $itemInfo->where('judul_data', 'LIKE', "%$username%"); }
+            if ($tahun) { $itemInfo->where('tahun_data', 'LIKE', "%$tahun%"); }
             
             switch (intval($roles)) {
                 case 1:
@@ -194,6 +197,7 @@ class PenelitianController extends Controller
                 $this->code = 104;
                 throw new Exception($this->getErrorMessage($this->code));
             }
+            $fileSize = null; // Initialize file size variable
             if($itemInfo->permission === 1){
 
                 // permission is show
@@ -204,6 +208,7 @@ class PenelitianController extends Controller
                 // Log::info('File exists: ' . (Storage::disk('public')->exists($relativeFilePath) ? 'true' : 'false'));
 
                 if (Storage::disk('public')->exists($relativeFilePath)) {
+                    $fileSize = Storage::disk('public')->size($relativeFilePath);
                 Storage::disk('public')->exists($relativeFilePath) and Storage::disk('public')->delete($relativeFilePath);
                 Storage::delete($relativeFilePath);
             } else {
@@ -217,6 +222,7 @@ class PenelitianController extends Controller
                 // Log::info('File exists: ' . (Storage::disk('private')->exists($relativeFilePath) ? 'true' : 'false'));
         
                     if (Storage::disk('private')->exists($relativeFilePath)) {
+                        $fileSize = Storage::disk('private')->size($relativeFilePath);
                     // Delete the file
                     Storage::disk('private')->delete($relativeFilePath);
                 } else {
@@ -224,7 +230,10 @@ class PenelitianController extends Controller
                 }
             }
 
-            
+            $user = User::where('id',$itemInfo->user_id)->first();
+            $updateData['usage'] = $user->usage - round($fileSize / (1024 * 1024 * 1024),4); 
+            $user->update($updateData);
+            $user->save();
             $itemInfo->delete();  
 
             $this->code = 0;

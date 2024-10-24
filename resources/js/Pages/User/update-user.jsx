@@ -4,6 +4,8 @@ import { Head } from "@inertiajs/react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import InputLabel from "@/Components/InputLabel";
+import TextInput from "@/Components/TextInput";
 
 export default function updateUser({ auth }) {
     const [roles, setRoles] = useState(1);
@@ -12,6 +14,7 @@ export default function updateUser({ auth }) {
     const [password2, setPassword2] = useState("");
     const [errors, setErrors] = useState({});
     const [size, setsize] = useState(0);
+    const [show, setshow] = useState(false);
 
     function change_role(value) {
         setRoles(value);
@@ -223,7 +226,11 @@ export default function updateUser({ auth }) {
                                             Password
                                         </label>
                                         <input
-                                            type="password"
+                                            type={
+                                                show == true
+                                                    ? "text"
+                                                    : "password"
+                                            }
                                             id="password"
                                             placeholder="Password"
                                             autoComplete=""
@@ -242,7 +249,11 @@ export default function updateUser({ auth }) {
                                             Konfirmasi Password
                                         </label>
                                         <input
-                                            type="password"
+                                            type={
+                                                show == true
+                                                    ? "text"
+                                                    : "password"
+                                            }
                                             id="password2"
                                             placeholder="Konfirmasi Password"
                                             autoComplete=""
@@ -259,6 +270,22 @@ export default function updateUser({ auth }) {
                                                 {errors.password2}
                                             </div>
                                         )}
+                                    </div>
+                                    <div className=" flex  ">
+                                        <TextInput
+                                            id="remember"
+                                            type="checkbox"
+                                            name="remember"
+                                            checked={show}
+                                            className="mt-1  w-5 h-5 border-blue-500"
+                                            onChange={(e) =>
+                                                setshow(e.target.checked)
+                                            }
+                                        />
+                                        <InputLabel
+                                            className="ml-2 mt-1"
+                                            value="Show Password"
+                                        />
                                     </div>
                                     {auth.user.roles == 1 && (
                                         <div className="">

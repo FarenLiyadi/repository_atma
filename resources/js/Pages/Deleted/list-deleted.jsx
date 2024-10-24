@@ -7,14 +7,19 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Dropdown from "@/Components/Dropdown";
 
-export default function listpenunjang({ auth }) {
+export default function listDeleted({ auth }) {
     const [page, setPage] = useState(1);
     const [length, setLength] = useState(10);
     const [totalPages, setTotalPages] = useState(0);
     const [role, setRole] = useState(0);
+    const [jenisdata, setjenisdata] = useState(0);
     const [tahun, setTahun] = useState("");
     const [username, setUsername] = useState("");
-    const [dataListUser, setDataListUser] = useState({ item: [], total: 0 });
+    const [judul, setjudul] = useState("");
+    const [dataListUser, setDataListUser] = useState({
+        item: [],
+        total: 0,
+    });
     const [counter, setCounter] = useState(1);
 
     async function search() {
@@ -42,7 +47,7 @@ export default function listpenunjang({ auth }) {
         };
 
         fetchData();
-    }, [username, role, length, page, tahun]);
+    }, [judul, username, role, length, page, tahun, jenisdata]);
 
     function handleChangeLength() {
         let selectedLength = document.getElementById("src_length").value;
@@ -61,109 +66,6 @@ export default function listpenunjang({ auth }) {
             setPage(page + 1);
         }
     }
-    const handleCopyClick = (item) => {
-        navigator.clipboard
-            .writeText(item)
-            .then(() => {
-                alert("Text copied successfully!");
-            })
-            .catch((err) => {
-                alert("Failed to copy text");
-            });
-    };
-
-    async function deletePengabdian(e, id) {
-        e.preventDefault();
-        if (confirm("Hapus Penunjang?")) {
-            const data = {
-                actor_id: auth.user.id,
-                item_id: id,
-            };
-
-            try {
-                const response = await axios.post("/delete-penunjang", data);
-                if (response.data.code !== 0) {
-                    toast.error(response.data.msg, {
-                        position: "top-right",
-                        autoClose: 3000,
-                        closeOnClick: true,
-                        draggable: true,
-                        theme: "light",
-                    });
-                    throw new Error(response.data.msg);
-                }
-                // Untuk Nofitikasi
-                toast.success(response.data.msg, {
-                    position: "top-right",
-                    autoClose: 3000,
-                    closeOnClick: true,
-                    draggable: true,
-                    theme: "light",
-                });
-                // Reload Data
-                search();
-            } catch (error) {
-                toast.error(error, {
-                    position: "top-right",
-                    autoClose: 3000,
-                    closeOnClick: true,
-                    draggable: true,
-                    theme: "light",
-                });
-                console.error(
-                    "There was a problem with the Axios request:",
-                    error
-                );
-                throw error;
-            }
-        }
-    }
-    async function updatePengabdian(e, id) {
-        e.preventDefault();
-        if (confirm("update permission Penunjang?")) {
-            const data = {
-                actor_id: auth.user.id,
-                item_id: id,
-            };
-
-            try {
-                const response = await axios.post("/update-penunjang", data);
-                if (response.data.code !== 0) {
-                    toast.error(response.data.msg, {
-                        position: "top-right",
-                        autoClose: 3000,
-                        closeOnClick: true,
-                        draggable: true,
-                        theme: "light",
-                    });
-                    throw new Error(response.data.msg);
-                }
-                // Untuk Nofitikasi
-                toast.success(response.data.msg, {
-                    position: "top-right",
-                    autoClose: 3000,
-                    closeOnClick: true,
-                    draggable: true,
-                    theme: "light",
-                });
-                // Reload Data
-                search();
-            } catch (error) {
-                toast.error(error, {
-                    position: "top-right",
-                    autoClose: 3000,
-                    closeOnClick: true,
-                    draggable: true,
-                    theme: "light",
-                });
-                console.error(
-                    "There was a problem with the Axios request:",
-                    error
-                );
-                throw error;
-            }
-        }
-    }
 
     async function getListUser(page = 1, length = 10, username, role, tahun) {
         let parameter = {
@@ -172,10 +74,12 @@ export default function listpenunjang({ auth }) {
             username: username,
             roles: role,
             tahun: tahun,
+            jenisdata: jenisdata,
+            judul: judul,
         };
-        // console.log(parameter);
+        console.log(parameter);
         try {
-            const response = await axios.get("/list-penunjang-request", {
+            const response = await axios.get("/list-deleted-request", {
                 params: parameter,
             });
             if (response.data.code !== 0) {
@@ -205,13 +109,13 @@ export default function listpenunjang({ auth }) {
 
     return (
         <NewAuthenticated>
-            <Head title="Penunjang" />
+            <Head title="Pengabdian" />
 
             <div className="py-5">
                 <div className="mx-auto sm:px-6 lg:px-8 space-y-6">
                     <div className="flex flex-col p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                         <h1 className="md:text-right text-center text-3xl font-bold">
-                            Data Penunjang
+                            Data terhapus
                         </h1>
                         <div className="">
                             <label className="text-dark font-bold text-2xl">
@@ -228,10 +132,28 @@ export default function listpenunjang({ auth }) {
                                     <input
                                         type="text"
                                         id="nama"
-                                        placeholder="nama"
+                                        placeholder="Judul"
                                         className="src_change capitalize bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-dark dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         onChange={(username) => {
                                             setUsername(username.target.value);
+                                            setPage(1);
+                                        }}
+                                    />
+                                </div>
+                                <div>
+                                    <label
+                                        htmlFor="nama"
+                                        className="block mb-2 font-medium text-gray-900 dark:text-dark"
+                                    >
+                                        Username
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="nama"
+                                        placeholder="paste username dari daftar user"
+                                        className="src_change capitalize bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-dark dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        onChange={(judul) => {
+                                            setjudul(judul.target.value);
                                             setPage(1);
                                         }}
                                     />
@@ -275,17 +197,42 @@ export default function listpenunjang({ auth }) {
                                         <option value="3">Pendek</option>
                                     </select>
                                 </div>
+                                <div>
+                                    <label
+                                        htmlFor="aktor"
+                                        className="block mb-2 font-medium text-gray-900 dark:text-dark"
+                                    >
+                                        Jenis data
+                                    </label>
+                                    <select
+                                        id="aktor"
+                                        className="src_change bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full lg:w-48 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-dark dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        onChange={(jenisdata) => {
+                                            setjenisdata(
+                                                jenisdata.target.value
+                                            );
+                                            setPage(1);
+                                        }}
+                                    >
+                                        <option value="">
+                                            Pilih Jenis Data
+                                        </option>
+                                        <option value="1">Pengabdian</option>
+                                        <option value="2">Penelitian</option>
+                                        <option value="3">Penunjang</option>
+                                        <option value="4">Pribadi</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <div className="pb-5">
                 <div className="mx-auto sm:px-6 lg:px-8 space-y-6">
                     <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                         <h2 className="text-3xl text-dark font-extrabold">
-                            Daftar penunjang
+                            List file terhapus
                         </h2>
                         <div className="pt-4 w-full ">
                             <table className="table-auto text-dark w-full border-collapse border border-slate-500">
@@ -313,7 +260,10 @@ export default function listpenunjang({ auth }) {
                                             Tgl. dibuat
                                         </th>
                                         <th className="border border-slate-600 text-xl py-2">
-                                            Aksi
+                                            Tgl. deleted
+                                        </th>
+                                        <th className="border border-slate-600 text-xl py-2">
+                                            Jenis data
                                         </th>
                                     </tr>
                                 </thead>
@@ -340,14 +290,19 @@ export default function listpenunjang({ auth }) {
                                                     {user.judul_data}
                                                 </td>
                                                 <td className="text-center border border-slate-700 px-3">
-                                                    {user.tahun_data}
+                                                    {user.tahun_data ?? "-"}
                                                 </td>
                                                 <td className="text-center border border-slate-700 px-3">
                                                     {user.semester == 1
                                                         ? "Awal"
-                                                        : user.semester == 2
+                                                        : ""}
+                                                    {user.semester == 2
                                                         ? "Akhir"
-                                                        : "Pendek"}
+                                                        : ""}
+                                                    {user.semester == 3
+                                                        ? "Pendek"
+                                                        : ""}
+                                                    {user.semester ? "" : "-"}
                                                 </td>
                                                 <td className="text-center border border-slate-700 px-3">
                                                     {user.permission == 1
@@ -366,94 +321,33 @@ export default function listpenunjang({ auth }) {
                                                         }
                                                     )}
                                                 </td>
+                                                <td className="text-center border border-slate-700 px-3">
+                                                    {new Date(
+                                                        user.deleted_at
+                                                    ).toLocaleDateString(
+                                                        "id-ID",
+                                                        {
+                                                            day: "2-digit",
+                                                            month: "long",
+                                                            year: "numeric",
+                                                        }
+                                                    )}
+                                                </td>
                                                 <td className="text-center border border-slate-700">
-                                                    <div className="">
-                                                        <Dropdown className="relative">
-                                                            <Dropdown.Trigger>
-                                                                <span className="inline-flex rounded-md">
-                                                                    <button
-                                                                        type="button"
-                                                                        className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-gray-800 hover:text-gray-200 dark:text-gray-400 dark:bg-gray-800 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
-                                                                    >
-                                                                        Aksi
-                                                                        <svg
-                                                                            className="ml-2 h-4 w-4"
-                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                            viewBox="0 0 20 20"
-                                                                            fill="currentColor"
-                                                                        >
-                                                                            <path
-                                                                                fillRule="evenodd"
-                                                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                                                clipRule="evenodd"
-                                                                            />
-                                                                        </svg>
-                                                                    </button>
-                                                                </span>
-                                                            </Dropdown.Trigger>
-
-                                                            <Dropdown.Content>
-                                                                <div className="relative z-50">
-                                                                    {auth.user
-                                                                        .id ==
-                                                                        user.user_id && (
-                                                                        <p
-                                                                            onClick={(
-                                                                                event
-                                                                            ) =>
-                                                                                updatePengabdian(
-                                                                                    event,
-                                                                                    user.id
-                                                                                )
-                                                                            }
-                                                                            className={
-                                                                                "block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out "
-                                                                            }
-                                                                        >
-                                                                            change
-                                                                            to{" "}
-                                                                            {user.permission ===
-                                                                            1
-                                                                                ? "Hide"
-                                                                                : "Show"}
-                                                                        </p>
-                                                                    )}
-                                                                    <a
-                                                                        href={`file/${user.id}`}
-                                                                        className="cursor-pointer block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
-                                                                    >
-                                                                        Download
-                                                                    </a>
-                                                                    {user.permission ===
-                                                                        1 && (
-                                                                        <p
-                                                                            onClick={() =>
-                                                                                handleCopyClick(
-                                                                                    `127.0.0.1:8000/file/${user.id}`
-                                                                                )
-                                                                            }
-                                                                            className="cursor-pointer block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
-                                                                        >
-                                                                            Share
-                                                                        </p>
-                                                                    )}
-                                                                    <p
-                                                                        onClick={(
-                                                                            event
-                                                                        ) =>
-                                                                            deletePengabdian(
-                                                                                event,
-                                                                                user.id
-                                                                            )
-                                                                        }
-                                                                        className="cursor-pointer block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
-                                                                    >
-                                                                        Delete
-                                                                    </p>
-                                                                </div>
-                                                            </Dropdown.Content>
-                                                        </Dropdown>
-                                                    </div>
+                                                    <td className="text-center">
+                                                        {user.link_pengabdian
+                                                            ? "Pengabdian"
+                                                            : ""}
+                                                        {user.link_pribadi
+                                                            ? "Pribadi"
+                                                            : ""}
+                                                        {user.link_penelitian
+                                                            ? "Penelitian"
+                                                            : ""}
+                                                        {user.link_penunjang
+                                                            ? "Penunjang"
+                                                            : ""}
+                                                    </td>
                                                 </td>
                                             </tr>
                                         ))
@@ -461,7 +355,6 @@ export default function listpenunjang({ auth }) {
                                 </tbody>
                             </table>
                         </div>
-
                         <Pagination
                             onChange={handleChangeLength}
                             prevBtn={prevBtn}

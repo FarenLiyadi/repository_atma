@@ -44,6 +44,10 @@ Route::middleware(['auth'])->group(function () {
             // tambah user baru
             Route::get('/create-user', 'createUserView')->name('create.user.view');
             Route::post('/create-user', 'createUser')->name('create.user');
+            // list deleted
+            Route::get('/list-deleted', 'listDeletedView')->name('list.deleted.view');
+            Route::get('/list-deleted-request', 'listDeleted')->name('list.deleted');
+            
             // list user
             Route::get('/list-user', 'listUserView')->name('list.user.view');
             Route::get('/list-user-request', 'listUser')->name('list.user');

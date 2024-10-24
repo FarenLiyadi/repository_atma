@@ -25,6 +25,7 @@ import { TbFileCv } from "react-icons/tb";
 import { FaDatabase } from "react-icons/fa";
 import { IoIosCloudUpload } from "react-icons/io";
 import { TiUserAdd } from "react-icons/ti";
+import { MdDelete } from "react-icons/md";
 
 import {
     Avatar,
@@ -96,7 +97,7 @@ export function Sidenav() {
             <div className={`relative`}>
                 <div to="" className=" px-8 text-center mx-auto w-max">
                     <div className=" lg:pt-8 xl:pt-4 flex w-full justify-center">
-                        <img src="/img/logo.png" className="w-28 " alt="" />
+                        <img src="/img/uajm.png" className="w-20 " alt="" />
                     </div>
                 </div>
                 <IconButton
@@ -190,6 +191,30 @@ export function Sidenav() {
                                         className="font-medium capitalize"
                                     >
                                         Upload Data
+                                    </Typography>
+                                </Button>
+                            </a>
+                        </li>
+                    )}
+                    {roles == 1 && (
+                        <li key="deleted-data">
+                            <a href="/list-deleted">
+                                <Button
+                                    variant={
+                                        route().current("list.deleted.view")
+                                            ? "gradient"
+                                            : "text"
+                                    }
+                                    color={"blue"}
+                                    className="flex items-center gap-4 px-4 capitalize"
+                                    fullWidth
+                                >
+                                    <MdDelete className="w-5 h-5 text-inherit" />
+                                    <Typography
+                                        color="inherit"
+                                        className="font-medium capitalize"
+                                    >
+                                        List deleted
                                     </Typography>
                                 </Button>
                             </a>

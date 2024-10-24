@@ -8,7 +8,7 @@ use App\Models\Penunjang;
 use App\Models\Pribadi;
 use App\Models\User;
 use Exception;
-
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -23,6 +23,10 @@ class UserController extends Controller
     // View section
     public function listUserView(){
         return Inertia::render('User/list-user', [
+        ]);
+    }
+    public function listDeletedView(){
+        return Inertia::render('Deleted/list-deleted', [
         ]);
     }
     public function createUserView(){
@@ -97,6 +101,123 @@ class UserController extends Controller
                 "item"  => $itemInfo->orderByDesc('created_at')->skip($offset)->take($length)->get(),
                 
             ];
+            
+
+            $this->dataMsg  = $response;
+            $this->code     = 0;
+        } catch (Exception $e) {
+            $this->message = $e->getMessage();
+        }
+
+        return $this->createResponse($this->dataMsg, $this->code, $this->message);
+    }
+    public function listDeleted(Request $request){
+        $auth = Auth::user()->id;
+        $akses = Auth::user()->roles;
+
+        $length     = $request->input('length', 10);
+        $page       = $request->input('page', 1);
+        $username   = $request->input('username');
+        $roles      = $request->input('roles');
+        $tahun      = $request->input('tahun');
+        $jenisData      = $request->input('jenisdata');
+        $judul      = $request->input('judul');
+        
+        
+        $validator = Validator::make($request->all(), [
+            'length'    => 'required|integer|min:1|max:100',
+            'page'      => 'required|integer|min:1',
+            'username'  => 'nullable|string|',
+            'roles'     => 'nullable|string',
+            'jenisdata'     => 'nullable|string',
+            'judul'     => 'nullable|string',
+        ]);
+
+        try {
+            if ($validator->fails()) {
+                $this->code = 1;
+                throw new Exception($validator->errors()->first());
+            }
+
+            $offset     = $length * ($page - 1);
+            if ($jenisData==0){
+                $itemInfo1 = Pengabdian::onlyTrashed()->with(['user'])->get();
+                $itemInfo2 = Pribadi::onlyTrashed()->with(['user'])->get();
+                $itemInfo3 = Penelitian::onlyTrashed()->with(['user'])->get();
+                $itemInfo4 = Penunjang::onlyTrashed()->with(['user'])->get();
+                $itemInfo = collect()
+                ->merge($itemInfo1)
+                ->merge($itemInfo2)
+                ->merge($itemInfo3)
+                ->merge($itemInfo4);
+            } elseif($jenisData=="1"){
+                $itemInfo1 = Pengabdian::onlyTrashed()->with(['user'])->get();
+                $itemInfo = collect()
+                ->merge($itemInfo1);
+            }elseif($jenisData=="2"){
+                $itemInfo1 = Penelitian::onlyTrashed()->with(['user'])->get();
+                $itemInfo = collect()
+                ->merge($itemInfo1);
+            }elseif($jenisData=="3"){
+                $itemInfo1 = Penunjang::onlyTrashed()->with(['user'])->get();
+                $itemInfo = collect()
+                ->merge($itemInfo1);
+            }elseif($jenisData=="4"){
+                $itemInfo1 = Pribadi::onlyTrashed()->with(['user'])->get();
+                $itemInfo = collect()
+                ->merge($itemInfo1);
+            }
+          
+            if ($judul) {
+                $itemInfo = $itemInfo->filter(function ($item) use ($judul) {
+                    // Make sure the `user` relationship is loaded and not null
+                    if ($item->user && stripos($item->user->username, $judul) !== false) {
+                        return true;
+                    }
+                    return false;
+                });
+            }
+
+            
+
+            // Apply username filter
+        if ($username) {
+            $itemInfo = $itemInfo->filter(function ($item) use ($username) {
+                return stripos($item->judul_data, $username) !== false;
+            });
+        }
+
+        // Apply year filter
+        if ($tahun) {
+            $itemInfo = $itemInfo->filter(function ($item) use ($tahun) {
+                return stripos($item->tahun_data, $tahun) !== false;
+            });
+        }
+
+        // Filter based on roles (using semester)
+        if ($roles) {
+            $itemInfo = $itemInfo->filter(function ($item) use ($roles) {
+                return $item->semester == $roles;
+            });
+        }
+      
+
+        if ($judul) {
+            $itemInfo = $itemInfo->filter(function ($item) use ($judul) {
+                return $item->user->username == $judul;
+            });
+        }
+
+        // Sort by `created_at` and apply pagination
+        $itemInfo = $itemInfo->sortByDesc('created_at')
+            ->slice($offset, $length)
+            ->values(); // Reset array keys after slicing
+
+        // Response
+        $response = [
+            "total" => $itemInfo->count(),
+            "item"  => $itemInfo,
+        ];
             
 
             $this->dataMsg  = $response;
@@ -309,7 +430,7 @@ class UserController extends Controller
         if (!$pengabdian) {
             return response()->json(['message' => 'File not found'], 404);
         }
-    // Log::info($pengabdian);
+        // Log::info($pengabdian);
         // Check the permission level
         if ($pengabdian->permission === 1) {
              // File stored in 'public/uploads/'

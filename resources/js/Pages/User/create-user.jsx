@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { Head } from "@inertiajs/react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import TextInput from "@/Components/TextInput";
+import InputLabel from "@/Components/InputLabel";
 
 export default function createUser({ auth }) {
     const [role, setRole] = useState(null);
@@ -10,6 +12,7 @@ export default function createUser({ auth }) {
     const [size, setsize] = useState(0);
     const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
+    const [show, setshow] = useState(false);
     const [errors, setErrors] = useState({});
 
     async function submitHandler(e) {
@@ -167,7 +170,11 @@ export default function createUser({ auth }) {
                                             Password
                                         </label>
                                         <input
-                                            type="password"
+                                            type={
+                                                show == true
+                                                    ? "text"
+                                                    : "password"
+                                            }
                                             id="password"
                                             placeholder="Password"
                                             autoComplete=""
@@ -187,7 +194,11 @@ export default function createUser({ auth }) {
                                             Konfirmasi Password
                                         </label>
                                         <input
-                                            type="password"
+                                            type={
+                                                show == true
+                                                    ? "text"
+                                                    : "password"
+                                            }
                                             id="password2"
                                             placeholder="Konfirmasi Password"
                                             autoComplete=""
@@ -205,6 +216,22 @@ export default function createUser({ auth }) {
                                                 {errors.password2}
                                             </div>
                                         )}
+                                    </div>
+                                    <div className=" flex  ">
+                                        <TextInput
+                                            id="remember"
+                                            type="checkbox"
+                                            name="remember"
+                                            checked={show}
+                                            className="mt-1  w-5 h-5 border-blue-500"
+                                            onChange={(e) =>
+                                                setshow(e.target.checked)
+                                            }
+                                        />
+                                        <InputLabel
+                                            className="ml-2 mt-1"
+                                            value="Show Password"
+                                        />
                                     </div>
                                     <div>
                                         <label

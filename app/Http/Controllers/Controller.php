@@ -39,6 +39,7 @@ abstract class Controller
             205 => "At least 1 Data Must Exist",
             206 => "Record Already Deleted",
             302 => "Storage tidak cukup, silahkan hubungi administrator",
+            303 => "Not Your access to delete!",
             900 => "Server Not Responding", // HTTP Endpoint error or Error outside try catch
             901 => "Server Return Error", // Script related error from apps, generated from catch
         ];

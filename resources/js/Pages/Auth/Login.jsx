@@ -11,7 +11,7 @@ export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         username: "",
         password: "",
-        // remember: false,
+        remember: false,
     });
 
     useEffect(() => {
@@ -70,7 +70,7 @@ export default function Login({ status, canResetPassword }) {
 
                     <TextInput
                         id="password"
-                        type="password"
+                        type={data.remember == true ? "text" : "password"}
                         name="password"
                         value={data.password}
                         className="mt-1 block w-full"
@@ -79,6 +79,17 @@ export default function Login({ status, canResetPassword }) {
                     />
 
                     <InputError message={errors.password} className="mt-2" />
+                </div>
+                <div className="mt-2 flex">
+                    <TextInput
+                        id="remember"
+                        type="checkbox"
+                        name="remember"
+                        checked={data.remember}
+                        className="mt-1  w-5 h-5 border-blue-500"
+                        onChange={(e) => setData("remember", e.target.checked)}
+                    />
+                    <InputLabel className="mt-1 ml-2" value="Show Password" />
                 </div>
 
                 <div className="flex items-center justify-end mt-4">

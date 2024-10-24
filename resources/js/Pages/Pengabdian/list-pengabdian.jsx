@@ -14,7 +14,10 @@ export default function listpengabdian({ auth }) {
     const [role, setRole] = useState(0);
     const [tahun, setTahun] = useState("");
     const [username, setUsername] = useState("");
-    const [dataListUser, setDataListUser] = useState({ item: [], total: 0 });
+    const [dataListUser, setDataListUser] = useState({
+        item: [],
+        total: 0,
+    });
     const [counter, setCounter] = useState(1);
 
     async function search() {
@@ -286,8 +289,8 @@ export default function listpengabdian({ auth }) {
                         <h2 className="text-3xl text-dark font-extrabold">
                             Daftar pengabdian
                         </h2>
-                        <div className="overflow-auto pt-4 table-auto text-dark w-full">
-                            <table className="border-collapse w-full border border-slate-500">
+                        <div className="pt-4 w-full ">
+                            <table className="table-auto text-dark w-full border-collapse border border-slate-500">
                                 <thead>
                                     <tr>
                                         <th className="border border-slate-600 text-xl py-2">
@@ -320,7 +323,7 @@ export default function listpengabdian({ auth }) {
                                     {dataListUser.total === 0 ? (
                                         <tr>
                                             <td
-                                                colSpan="5"
+                                                colSpan="8"
                                                 className="text-center font-bold text-2xl p-2"
                                             >
                                                 No Data Found
@@ -342,25 +345,17 @@ export default function listpengabdian({ auth }) {
                                                     {user.tahun_data}
                                                 </td>
                                                 <td className="text-center border border-slate-700 px-3">
-                                                    {user.semester == 1 && (
-                                                        <p>Awal</p>
-                                                    )}
-                                                    {user.semester == 2 && (
-                                                        <p>Akhir</p>
-                                                    )}
-                                                    {user.semester == 3 && (
-                                                        <p>Pendek</p>
-                                                    )}
+                                                    {user.semester == 1
+                                                        ? "Awal"
+                                                        : user.semester == 2
+                                                        ? "Akhir"
+                                                        : "Pendek"}
                                                 </td>
                                                 <td className="text-center border border-slate-700 px-3">
-                                                    {user.permission == 1 && (
-                                                        <p>Show</p>
-                                                    )}
-                                                    {user.permission == 2 && (
-                                                        <p>Hide</p>
-                                                    )}
+                                                    {user.permission == 1
+                                                        ? "Show"
+                                                        : "Hide"}
                                                 </td>
-
                                                 <td className="text-center border border-slate-700 px-3">
                                                     {new Date(
                                                         user.created_at
@@ -375,16 +370,16 @@ export default function listpengabdian({ auth }) {
                                                 </td>
                                                 <td className="text-center border border-slate-700">
                                                     <div className="">
-                                                        <Dropdown className="absolute">
+                                                        <Dropdown className="relative">
                                                             <Dropdown.Trigger>
                                                                 <span className="inline-flex rounded-md">
                                                                     <button
                                                                         type="button"
-                                                                        className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white dark:text-gray-400 bg-gray-800 dark:bg-gray-800 hover:text-gray-200 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
+                                                                        className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-gray-800 hover:text-gray-200 dark:text-gray-400 dark:bg-gray-800 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
                                                                     >
-                                                                        aksi
+                                                                        Aksi
                                                                         <svg
-                                                                            className="ms-2 -me-0.5 h-4 w-4"
+                                                                            className="ml-2 h-4 w-4"
                                                                             xmlns="http://www.w3.org/2000/svg"
                                                                             viewBox="0 0 20 20"
                                                                             fill="currentColor"
@@ -401,31 +396,33 @@ export default function listpengabdian({ auth }) {
 
                                                             <Dropdown.Content>
                                                                 <div className="relative z-50">
-                                                                    <p
-                                                                        onClick={(
-                                                                            event
-                                                                        ) =>
-                                                                            updatePengabdian(
-                                                                                event,
-                                                                                user.id
-                                                                            )
-                                                                        }
-                                                                        className={
-                                                                            "block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out "
-                                                                        }
-                                                                    >
-                                                                        change
-                                                                        to{" "}
-                                                                        {user.permission ===
-                                                                        1
-                                                                            ? "Hide"
-                                                                            : "Show"}
-                                                                    </p>
+                                                                    {user.user_id ==
+                                                                        auth
+                                                                            .user
+                                                                            .id && (
+                                                                        <p
+                                                                            onClick={(
+                                                                                event
+                                                                            ) =>
+                                                                                updatePengabdian(
+                                                                                    event,
+                                                                                    user.id
+                                                                                )
+                                                                            }
+                                                                            className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
+                                                                        >
+                                                                            {`Change to ${
+                                                                                user.permission ===
+                                                                                1
+                                                                                    ? "Hide"
+                                                                                    : "Show"
+                                                                            }`}
+                                                                        </p>
+                                                                    )}
+
                                                                     <a
                                                                         href={`file/${user.id}`}
-                                                                        className={
-                                                                            "cursor-pointer block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out "
-                                                                        }
+                                                                        className="cursor-pointer block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
                                                                     >
                                                                         Download
                                                                     </a>
@@ -437,9 +434,7 @@ export default function listpengabdian({ auth }) {
                                                                                     `127.0.0.1:8000/file/${user.id}`
                                                                                 )
                                                                             }
-                                                                            className={
-                                                                                "cursor-pointer block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out "
-                                                                            }
+                                                                            className="cursor-pointer block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
                                                                         >
                                                                             Share
                                                                         </p>
@@ -453,9 +448,7 @@ export default function listpengabdian({ auth }) {
                                                                                 user.id
                                                                             )
                                                                         }
-                                                                        className={
-                                                                            "cursor-pointer block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out "
-                                                                        }
+                                                                        className="cursor-pointer block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
                                                                     >
                                                                         Delete
                                                                     </p>
