@@ -46,7 +46,7 @@ class PenelitianController extends Controller
 
             $offset     = $length * ($page - 1);
             $itemInfo   = Penelitian::query()->whereNull('deleted_at')->with(['user']);
-            if ($akses !== "1") {
+            if ($akses !== 1) {
                 $itemInfo->where(function ($query) use ($auth) {
                     $query->where('permission', '1')
                           ->orWhere('user_id', $auth);
@@ -234,6 +234,10 @@ class PenelitianController extends Controller
             $updateData['usage'] = $user->usage - round($fileSize / (1024 * 1024 * 1024),4); 
             $user->update($updateData);
             $user->save();
+            $actor = Auth::user()->id;
+            $updateData2['deleted_by'] = $actor; 
+            $itemInfo->update($updateData2);
+            $itemInfo->save();
             $itemInfo->delete();  
 
             $this->code = 0;

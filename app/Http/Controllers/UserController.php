@@ -442,14 +442,19 @@ class UserController extends Controller
                 }
         } else {
             // Private file: Only the owner can access
-            if(Auth::check() && Auth::user()->roles === 1){
-                $fix_path = $pengabdian->link_pengabdian ?? $pengabdian->link_penelitian ?? $pengabdian->link_penunjang ?? $pengabdian->link_pribadi;
-                $filePath = storage_path('app/private/uploads/' . $fix_path );
-                if (file_exists($filePath)) {
-                    // Force download the file
-                    return response()->download($filePath);
-                }else {
-                    return view('errors.403'); // Return a 404 view if the file is not found
+            if(Auth::check() ){
+                if(Auth::user()->roles === 1 || $pengabdian->user_id == Auth::user()->id ){
+
+                    $fix_path = $pengabdian->link_pengabdian ?? $pengabdian->link_penelitian ?? $pengabdian->link_penunjang ?? $pengabdian->link_pribadi;
+                    $filePath = storage_path('app/private/uploads/' . $fix_path );
+                    if (file_exists($filePath)) {
+                        // Force download the file
+                        return response()->download($filePath);
+                    }else {
+                        return view('errors.403'); // Return a 404 view if the file is not found
+                    }
+                } else{
+                    return view('errors.403'); // Return the 403 view
                 }
             } else {
                 // Unauthorized access attempt

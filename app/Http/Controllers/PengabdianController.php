@@ -50,7 +50,7 @@ class PengabdianController extends Controller
 
 
 
-            if ($akses !== "1") {
+            if ($akses !== 1) {
                 $itemInfo->where(function ($query) use ($auth) {
                     $query->where('permission', '1')
                           ->orWhere('user_id', $auth);
