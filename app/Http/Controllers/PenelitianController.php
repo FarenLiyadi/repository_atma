@@ -113,25 +113,29 @@ class PenelitianController extends Controller
                 throw new Exception($this->getErrorMessage($this->code));
             }
 
-            
             if($itemInfo->permission === 1){
 
                 $filePath =  $itemInfo->link_penelitian;
                 $relativeFilePath = substr($filePath,8);
-                // Log::info('File path: ' . $relativeFilePath);
+                // Log::info('File path: ' . public_path(substr($filePath,1)));
 
                 $newFilename = basename($filePath); // Get the filename
-                $destinationPath = storage_path('app/private/uploads/' . $newFilename);
-                $old_file = public_path(substr($filePath,1)); // Path in public storage
+                $destinationDir = storage_path('app/private/uploads/'.$itemInfo->tahun_data.'/'.$itemInfo->user->username);
+                // Create the directory if it doesn't exist
+                    if (!file_exists($destinationDir)) {
+                        mkdir($destinationDir, 0755, true); // Recursive directory creation with permissions
+                    }
+                $destinationPath = storage_path('app/private/uploads/'.$itemInfo->tahun_data.'/'.$itemInfo->user->username .'/'. $newFilename);
+                $old_file = public_path($filePath); // Path in public storage
                 // Log::info(Storage::exists($relativeFilePath) ? 'true' : 'false');
                 
-                if (Storage::disk('public')->exists($relativeFilePath)) {
+                if (Storage::disk('public')->exists($relativeFilePath)&& file_exists($old_file)) {
                     if (copy($old_file, $destinationPath)) {
                         // Generate the public URL manually
                         
                         Storage::disk('public')->delete($relativeFilePath);
                         
-                        $updateData['link_penelitian'] = $newFilename; 
+                        $updateData['link_penelitian'] = 'uploads/'.$itemInfo->tahun_data.'/'.$itemInfo->user->username .'/'. $newFilename; 
                         $updateData['permission'] = 2; 
                         
                 }  
@@ -142,25 +146,34 @@ class PenelitianController extends Controller
             } elseif ($itemInfo->permission === 2) {
              
                 $filePath =  $itemInfo->link_penelitian;
-                $relativeFilePath = '/uploads/'.$filePath;
+                $newFilename = basename($filePath); // Get the filename
+                // $relativeFilePath = '/'.$filePath;
+               
                 // Log::info('File path: ' . $relativeFilePath);
 
-                $newFilename = basename($filePath); // Get the filename
-                $old_file = storage_path('app/private/uploads/' . $filePath);
-                $destinationPath = public_path('storage/uploads/' . $filePath); // Path in public storage
-                
-                if (Storage::disk('private')->exists($relativeFilePath)) {
-                    if (copy($old_file, $destinationPath)) {
-                        // Generate the public URL manually
-                        $url = '/storage/uploads/' . $newFilename;
-                        Storage::disk('private')->delete($relativeFilePath);
-                        $updateData['link_penelitian'] = $url; 
-                        $updateData['permission'] = 1; 
-                        
-                } }else {
+                $old_file = storage_path('app/private/' . $filePath);
+                $destinationDir = public_path('storage/uploads/'.$itemInfo->tahun_data.'/'.$itemInfo->user->username);
+              
+                $destinationPath = $destinationDir . '/' . $newFilename;// Path in public storage
+
+    
+                if (!file_exists($destinationDir)) {
+                    mkdir($destinationDir, 0755, true);
+                }
+
+                if (Storage::disk('private')->exists('/' . $filePath) && file_exists($old_file)) {
+                 if (copy($old_file, $destinationPath)) {
+                $url = '/storage/uploads/' . $itemInfo->tahun_data . '/' . $itemInfo->user->username . '/' . $newFilename;
+                Storage::disk('private')->delete('/' . $filePath);
+
+                // Update database fields or variables
+                $updateData['link_penelitian'] = $url;
+                $updateData['permission'] = 1;
+        } }else {
                     return response()->json(['error' => 'File not found'], 404);
                 }
             }
+            
 
            
             $itemInfo->update($updateData);
@@ -221,10 +234,10 @@ class PenelitianController extends Controller
                 // Log::info('File path: ' . $relativeFilePath);
                 // Log::info('File exists: ' . (Storage::disk('private')->exists($relativeFilePath) ? 'true' : 'false'));
         
-                    if (Storage::disk('private')->exists($relativeFilePath)) {
-                        $fileSize = Storage::disk('private')->size($relativeFilePath);
+                    if (Storage::disk('private')->exists($filePath)) {
+                        $fileSize = Storage::disk('private')->size($filePath);
                     // Delete the file
-                    Storage::disk('private')->delete($relativeFilePath);
+                    Storage::disk('private')->delete($filePath);
                 } else {
                     return response()->json(['error' => 'File not found'], 404);
                 }

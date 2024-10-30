@@ -177,12 +177,12 @@ export default function listUser({ auth }) {
                                         htmlFor="nama"
                                         className="block mb-2 font-medium text-gray-900 dark:text-dark"
                                     >
-                                        Nama
+                                        username
                                     </label>
                                     <input
                                         type="text"
                                         id="nama"
-                                        placeholder="nama"
+                                        placeholder="username"
                                         className="src_change capitalize bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-dark dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         onChange={(username) => {
                                             setUsername(username.target.value);
@@ -232,7 +232,10 @@ export default function listUser({ auth }) {
                                             #
                                         </th>
                                         <th className="border border-slate-600 text-xl py-2">
-                                            Nama
+                                            NIDN
+                                        </th>
+                                        <th className="border border-slate-600 text-xl py-2">
+                                            username
                                         </th>
                                         <th className="border border-slate-600 text-xl py-2">
                                             Aktor
@@ -266,6 +269,9 @@ export default function listUser({ auth }) {
                                             <tr key={index}>
                                                 <td className="text-center border border-slate-600 py-2">
                                                     {counter + index}
+                                                </td>
+                                                <td className="text-start border border-slate-700 px-3">
+                                                    {user.nidn}
                                                 </td>
                                                 <td className="text-start border border-slate-700 px-3">
                                                     {user.username}

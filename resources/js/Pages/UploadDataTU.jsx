@@ -158,10 +158,6 @@ export default function UploadData({ auth }) {
                                 NOTED :
                             </p>
                             <ul className="uppercase text-red-900 list-disc list-inside">
-                                <li>
-                                    data pribadi format file harus
-                                    JPG/DOCS/XLSX/CSV/PDF
-                                </li>
                                 <li>Max size per file hanya 10 Mb</li>
                             </ul>
                         </div>

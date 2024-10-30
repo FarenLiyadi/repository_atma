@@ -230,6 +230,7 @@ class UserController extends Controller
     }
     public function createUser(Request $request){
         $username   = $request->input('username');
+        $nidn   = $request->input('nidn');
         $password   = $request->input('password');
         $confPass   = $request->input('conf_password');
         $roles      = $request->input('roles');
@@ -237,6 +238,7 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), [
             'username'      => 'required|string|min:5|max:20',
+            'nidn'      => 'required|string|min:5|max:20',
             'password'      => 'required|string|min:8|max:20',
             'conf_password' => 'required|string|min:8|max:20',
             'roles'         => 'required|numeric|min:1|max:5',
@@ -261,6 +263,7 @@ class UserController extends Controller
             $Userid = Uuid::uuid1();
             User::create([
                 "id"            => $Userid,
+                "nidn"      => $nidn,
                 "username"      => $username,
                 "password"      => Hash::make($password),
                 "roles"         => $roles,
@@ -331,6 +334,7 @@ class UserController extends Controller
         $actor_id     = $request->input('actor_id');
         $itemId     = $request->input('item_id');
         $username   = $request->input('username');
+        $nidn   = $request->input('nidn');
         $password   = $request->input('password');
         $confPass   = $request->input('conf_password');
         $roles      = $request->input('roles');
@@ -342,6 +346,7 @@ class UserController extends Controller
             'actor_id'       => 'required|string|min:36|max:36',
             'item_id'       => 'required|string|min:36|max:36',
             'username'      => 'required|string|min:5|max:20',
+            'nidn'      => 'required|string|min:5|max:20',
             'size'     => 'nullable|numeric',
             'password'      => 'nullable|string|min:8|max:20',
             'conf_password' => 'nullable|string|min:8|max:20',
@@ -373,6 +378,7 @@ class UserController extends Controller
             }
             if ($userInfo->roles == 1){
                 if ($username) { $updateData['username'] = $username; }
+                if ($nidn) { $updateData['nidn'] = $nidn; }
                 if ($roles) { $updateData['roles'] = $roles; }
                 if ($size) { $updateData['size'] = $size; }
             }
@@ -446,7 +452,7 @@ class UserController extends Controller
                 if(Auth::user()->roles === 1 || $pengabdian->user_id == Auth::user()->id ){
 
                     $fix_path = $pengabdian->link_pengabdian ?? $pengabdian->link_penelitian ?? $pengabdian->link_penunjang ?? $pengabdian->link_pribadi;
-                    $filePath = storage_path('app/private/uploads/' . $fix_path );
+                    $filePath = storage_path('app/private/' . $fix_path );
                     if (file_exists($filePath)) {
                         // Force download the file
                         return response()->download($filePath);
@@ -464,7 +470,7 @@ class UserController extends Controller
             if (Auth::check() && Auth::user()->id === $pengabdian->user_id ) {
                 // Serve the private file
                 $fix_path = $pengabdian->link_pengabdian ?? $pengabdian->link_penelitian ?? $pengabdian->link_penunjang ?? $pengabdian->link_pribadi;
-                $filePath = storage_path('app/private/uploads/' . $fix_path );
+                $filePath = storage_path('app/private/' . $fix_path );
                 if (file_exists($filePath)) {
                     // Force download the file
                     return response()->download($filePath);
@@ -491,11 +497,13 @@ class UserController extends Controller
         $jenisData = $request->input('jenis_data');
         $permission = $request->input('permission'); // 1 or 2
         $user_id = Auth::user()->id;
+      
+       
         if ($jenisData == '4'){
             $validator = Validator::make($request->all(), [
                 'jenis_data' => 'required|in:1,2,3,4', // assuming 1 = Pengabdian, etc.
                 'permission' => 'required|in:1,2', // assuming 1 = Pengabdian, etc.
-                'file' => 'required|file|mimes:pdf,jpg,png,doc,docx,xlsx,csv|max:10240', // max 10 MB, adapt as needed
+                'file' => 'required|file|max:10240', // max 10 MB, adapt as needed
                 'judul_data' => 'required|string|max:255',
            
          
@@ -507,13 +515,10 @@ class UserController extends Controller
                 'semester' => 'required|in:1,2,3', // assuming 1 = Awal, 2 = Akhir, 3 = Pendek
                 'jenis_data' => 'required|in:1,2,3,4', // assuming 1 = Pengabdian, etc.
                 'permission' => 'required|in:1,2', // assuming 1 = Pengabdian, etc.
-                'file' => 'required|file|mimes:pdf|max:10240', // max 10 MB, adapt as needed
+                'file' => 'required|file|max:10240', // max 10 MB, adapt as needed
             ]);
         }
-        
-        
-   
-
+     
         
         try{        
 
@@ -542,15 +547,17 @@ class UserController extends Controller
                 $extension = $file->getClientOriginalExtension();
                 $filenameWithoutExtension = pathinfo($originalFilename, PATHINFO_FILENAME);
                 $newFilename = $filenameWithoutExtension . '_' . time() .Auth::user()->username. '.' . $extension;
+               
+                $nama = Auth::user()->username;
     
                 if ($permission == "1") {
                     // Public: Store the file in the 'public' disk
-                    $path = $file->storeAs('uploads', $newFilename, 'public');
+                    $path = $file->storeAs('uploads/'.$tahunData.'/'.$nama, $newFilename, 'public');
                     $url = Storage::url($path); // Public URL
                 } else {
                     // Private: Store the file in the default 'local' disk
-                    $path = $file->storeAs('uploads', $newFilename);
-                    $url = $newFilename; // No public URL for private files
+                    $path = $file->storeAs('uploads/'.$tahunData.'/'.$nama, $newFilename);
+                    $url = 'uploads/'.$tahunData.'/'.$nama.'/'.$newFilename; // No public URL for private files
                 }}
     
 

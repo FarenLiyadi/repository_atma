@@ -22,6 +22,7 @@ class User extends Authenticatable
     protected $fillable = [
         
         'username',
+        'nidn',
         'roles',
         'email',
         'password',
@@ -50,6 +51,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = md5($value);
     }
     public function Pengabdian()
     {

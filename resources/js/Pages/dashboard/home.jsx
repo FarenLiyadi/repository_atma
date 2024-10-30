@@ -10,12 +10,17 @@ import {
     MenuList,
     MenuItem,
     Avatar,
-    Tooltip,
+    // Tooltip,
     Progress,
     CardFooter,
 } from "@material-tailwind/react";
-import Chart from "react-apexcharts";
-import { Square3Stack3DIcon } from "@heroicons/react/24/outline";
+// import { PieChart } from "react-minimal-pie-chart";
+// import Chart from "react-apexcharts";
+import { Pie } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+
+// Register Chart.js components
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 import { StatisticsCard } from "@/widgets/cards";
 
@@ -52,7 +57,35 @@ export function Home({ user_tu, user_dosen, usage, size, roles }) {
             },
         },
     ];
-
+    const data = {
+        labels: ["Free", "Usage"],
+        datasets: [
+            {
+                label: "Size in GB",
+                data: [size - usage, usage],
+                backgroundColor: [
+                    "rgba(54, 162, 235, 0.2)",
+                    "rgba(255, 99, 132, 0.2)",
+                ],
+                borderColor: [
+                    "rgba(54, 162, 239, 0.2)",
+                    "rgba(255, 99, 132, 1)",
+                ],
+                borderWidth: 1,
+            },
+        ],
+    };
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: "top",
+            },
+            tooltip: {
+                enabled: true,
+            },
+        },
+    };
     return (
         <div className="mt-12 h-screen">
             <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
@@ -92,6 +125,7 @@ export function Home({ user_tu, user_dosen, usage, size, roles }) {
                                 Free Space : {size - usage} Gb
                             </Typography>
                         </CardBody>
+                        <Pie data={data} options={options} />
                     </Card>
                 )}
             </div>

@@ -10,6 +10,7 @@ import TextInput from "@/Components/TextInput";
 export default function updateUser({ auth }) {
     const [roles, setRoles] = useState(1);
     const [username, setUsername] = useState("");
+    const [nidn, setNidn] = useState("");
     const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
     const [errors, setErrors] = useState({});
@@ -62,6 +63,7 @@ export default function updateUser({ auth }) {
         const data = items.item;
 
         setUsername(data.username);
+        setNidn(data.nidn);
         setsize(data.size);
         setRoles(data.roles);
     }
@@ -73,6 +75,9 @@ export default function updateUser({ auth }) {
 
         if (!username.trim()) {
             errors.username = "Username harus diisi.";
+        }
+        if (!nidn.trim()) {
+            errors.username = "NIDN.";
         }
 
         if (password) {
@@ -89,6 +94,7 @@ export default function updateUser({ auth }) {
             const data = {
                 item_id: itemId,
                 username: username,
+                nidn: nidn,
                 size: size,
                 password: password,
                 conf_password: password2,
@@ -190,31 +196,59 @@ export default function updateUser({ auth }) {
                             <form onSubmit={submitHandler}>
                                 <div className="my-2 grid grid-flow-row auto-rows-max justify-center gap-4">
                                     {auth.user.roles == 1 && (
-                                        <div>
-                                            <label
-                                                htmlFor="username"
-                                                className="block mb-2 font-medium text-gray-900 dark:text-white"
-                                            >
-                                                username
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="username"
-                                                placeholder="username"
-                                                className="src_change w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                value={username}
-                                                onChange={(event) => {
-                                                    setUsername(
-                                                        event.target.value
-                                                    );
-                                                }}
-                                                required
-                                            />
-                                            {errors.username && (
-                                                <div className="text-red-600 dark:text-red-400">
-                                                    {errors.username}
-                                                </div>
-                                            )}
+                                        <div className="">
+                                            <div>
+                                                <label
+                                                    htmlFor="nidn"
+                                                    className="block mb-2 font-medium text-gray-900 dark:text-white"
+                                                >
+                                                    NIDN
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="nidn"
+                                                    placeholder="NIDN"
+                                                    className="src_change w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    value={nidn}
+                                                    onChange={(event) => {
+                                                        setNidn(
+                                                            event.target.value
+                                                        );
+                                                    }}
+                                                    required
+                                                />
+                                                {errors.username && (
+                                                    <div className="text-red-600 dark:text-red-400">
+                                                        {errors.username}
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <div>
+                                                <label
+                                                    htmlFor="username"
+                                                    className="block mb-2 font-medium text-gray-900 dark:text-white"
+                                                >
+                                                    username
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="username"
+                                                    placeholder="username"
+                                                    className="src_change w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    value={username}
+                                                    onChange={(event) => {
+                                                        setUsername(
+                                                            event.target.value
+                                                        );
+                                                    }}
+                                                    required
+                                                />
+                                                {errors.username && (
+                                                    <div className="text-red-600 dark:text-red-400">
+                                                        {errors.username}
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
                                     )}
 

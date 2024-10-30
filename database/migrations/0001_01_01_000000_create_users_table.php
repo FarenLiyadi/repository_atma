@@ -16,6 +16,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('nidn' , 255)->unique();
             $table->string('username' , 255)->unique();
             $table->tinyInteger('roles')->comment('1 superadmin, 2 dosen, 3 TU');
             $table->tinyInteger('size')->nullable();
@@ -45,18 +46,20 @@ return new class extends Migration
         });
         User::create([
             "id"            => Uuid::uuid1(),
+            "nidn"      => "13032000",
             "username"      => "superadmin",
             // "email"         => "superadmin@example.com",
-            "password"      => Hash::make("12345678"),
+            "password"      => "12345678",
             "roles"         => 1,
             "size"  => 10
            
         ]);
         User::create([
             "id"            => Uuid::uuid1(),
+            "nidn"      => "27032001",
             "username"      => "faren",
             // "email"         => "superadmin@example.com",
-            "password"      => Hash::make("12345678"),
+            "password"      => "12345678",
             "roles"         => 2,
             "size"  => 10
            
@@ -64,8 +67,9 @@ return new class extends Migration
         User::create([
             "id"            => Uuid::uuid1(),
             "username"      => "alvin",
+            "nidn"      => "18032007",
             // "email"         => "superadmin@example.com",
-            "password"      => Hash::make("12345678"),
+            "password"      => 12345678,
             "roles"         => 3,
             "size"  => 10
            

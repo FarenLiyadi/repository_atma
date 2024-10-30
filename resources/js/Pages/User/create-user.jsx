@@ -9,6 +9,7 @@ import InputLabel from "@/Components/InputLabel";
 export default function createUser({ auth }) {
     const [role, setRole] = useState(null);
     const [username, setUsername] = useState("");
+    const [nidn, setNidn] = useState("");
     const [size, setsize] = useState(0);
     const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
@@ -20,6 +21,9 @@ export default function createUser({ auth }) {
 
         let errors = {};
 
+        if (!nidn.trim()) {
+            errors.nidn = "NIDN harus diisi.";
+        }
         if (!username.trim()) {
             errors.username = "Nama harus diisi.";
         }
@@ -35,6 +39,7 @@ export default function createUser({ auth }) {
         if (Object.keys(errors).length === 0) {
             const data = {
                 username: username,
+                nidn: nidn,
                 size: size,
                 password: password,
                 conf_password: password2,
@@ -139,10 +144,34 @@ export default function createUser({ auth }) {
                                 <div className="my-2 grid grid-flow-row auto-rows-max justify-center gap-4">
                                     <div>
                                         <label
+                                            htmlFor="nidn"
+                                            className="block mb-2 font-medium text-gray-900 dark:text-white"
+                                        >
+                                            NIDN
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="nidn"
+                                            placeholder="NIDN"
+                                            className="src_change w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            value={nidn}
+                                            onChange={(event) => {
+                                                setNidn(event.target.value);
+                                            }}
+                                            required
+                                        />
+                                        {errors.nidn && (
+                                            <div className="text-red-600 dark:text-red-400">
+                                                {errors.nidn}
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <label
                                             htmlFor="nama"
                                             className="block mb-2 font-medium text-gray-900 dark:text-white"
                                         >
-                                            Nama
+                                            Username
                                         </label>
                                         <input
                                             type="text"
