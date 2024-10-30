@@ -38,16 +38,12 @@ class UserController extends Controller
         ]);
     }
     public function upload_data(){
-        $user = Auth::user()->roles;
-        if($user == 3){
-
-            return Inertia::render('UploadDataTU', [
-            ]);
-        } else{
+       
+        
             return Inertia::render('UploadData', [
             ]);
 
-        }
+        
     }
 
     // API section
@@ -499,16 +495,7 @@ class UserController extends Controller
         $user_id = Auth::user()->id;
       
        
-        if ($jenisData == '4'){
-            $validator = Validator::make($request->all(), [
-                'jenis_data' => 'required|in:1,2,3,4', // assuming 1 = Pengabdian, etc.
-                'permission' => 'required|in:1,2', // assuming 1 = Pengabdian, etc.
-                'file' => 'required|file|max:10240', // max 10 MB, adapt as needed
-                'judul_data' => 'required|string|max:255',
-           
-         
-            ]);
-        } else{
+        
             $validator = Validator::make($request->all(), [
                 'judul_data' => 'required|string|max:255',
                 'tahun_data' => 'required|numeric',
@@ -517,7 +504,7 @@ class UserController extends Controller
                 'permission' => 'required|in:1,2', // assuming 1 = Pengabdian, etc.
                 'file' => 'required|file|max:10240', // max 10 MB, adapt as needed
             ]);
-        }
+      
      
         
         try{        
@@ -608,6 +595,8 @@ class UserController extends Controller
                     "judul_data" => $judulData,
                     "link_pribadi" => $url,
                     "permission"         => $permission,
+                    "tahun_data"      => $tahunData,
+                    "semester"         => $semester,
                 ]);
             }
             $itemInfo->update($updateData);

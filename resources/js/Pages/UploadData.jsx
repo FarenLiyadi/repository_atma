@@ -35,18 +35,18 @@ export default function UploadData({ auth }) {
         if (!jenisdata) {
             errors.jenisdata = "Harus Memilih jenis data.";
         }
-        if (jenisdata != 4) {
-            if (!judul_data.trim()) {
-                errors.judul_data = "Judul data harus diisi.";
-            }
-            if (!tahun_data.trim()) {
-                errors.tahun_data = "Tahun data harus diisi.";
-            }
 
-            if (!semester) {
-                errors.semester = "Harus Memilih semester.";
-            }
+        if (!judul_data.trim()) {
+            errors.judul_data = "Judul data harus diisi.";
         }
+        if (!tahun_data.trim()) {
+            errors.tahun_data = "Tahun data harus diisi.";
+        }
+
+        if (!semester) {
+            errors.semester = "Harus Memilih semester.";
+        }
+
         if (selectedFile.size > 10 * 1024 * 1024) {
             // File size > 10MB
             errors.selectedFile = "Ukuran file tidak boleh melebihi 10 MB.";
@@ -232,68 +232,54 @@ export default function UploadData({ auth }) {
                                         )}
                                     </div>
 
-                                    {jenisdata != 4 && (
-                                        <>
-                                            <div>
-                                                <label
-                                                    htmlFor="tahun_data"
-                                                    className="block mb-2 font-medium text-gray-900 dark:text-white"
-                                                >
-                                                    Tahun Data
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    id="tahun_data"
-                                                    placeholder="Tahun data"
-                                                    className="src_change w-full md:w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                    value={tahun_data}
-                                                    onChange={(event) =>
-                                                        settahun_data(
-                                                            event.target.value
-                                                        )
-                                                    }
-                                                    required
-                                                />
-                                            </div>
+                                    <div>
+                                        <label
+                                            htmlFor="tahun_data"
+                                            className="block mb-2 font-medium text-gray-900 dark:text-white"
+                                        >
+                                            Tahun Data
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="tahun_data"
+                                            placeholder="Tahun data"
+                                            className="src_change w-full md:w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            value={tahun_data}
+                                            onChange={(event) =>
+                                                settahun_data(
+                                                    event.target.value
+                                                )
+                                            }
+                                            required
+                                        />
+                                    </div>
 
-                                            <div>
-                                                <label
-                                                    htmlFor="semester"
-                                                    className="block mb-2 font-medium text-gray-900 dark:text-white"
-                                                >
-                                                    Semester
-                                                </label>
-                                                <select
-                                                    id="semester"
-                                                    required
-                                                    className="src_change w-full md:w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                    value={semester}
-                                                    onChange={(event) =>
-                                                        change_semester(
-                                                            event.target.value
-                                                        )
-                                                    }
-                                                >
-                                                    <option
-                                                        disabled
-                                                        selected
-                                                        value
-                                                    >
-                                                        Pilih semester
-                                                    </option>
-                                                    <option value="1">
-                                                        Awal
-                                                    </option>
-                                                    <option value="2">
-                                                        Akhir
-                                                    </option>
-                                                    <option value="3">
-                                                        Pendek
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </>
-                                    )}
+                                    <div>
+                                        <label
+                                            htmlFor="semester"
+                                            className="block mb-2 font-medium text-gray-900 dark:text-white"
+                                        >
+                                            Semester
+                                        </label>
+                                        <select
+                                            id="semester"
+                                            required
+                                            className="src_change w-full md:w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            value={semester}
+                                            onChange={(event) =>
+                                                change_semester(
+                                                    event.target.value
+                                                )
+                                            }
+                                        >
+                                            <option disabled selected value>
+                                                Pilih semester
+                                            </option>
+                                            <option value="1">Awal</option>
+                                            <option value="2">Akhir</option>
+                                            <option value="3">Pendek</option>
+                                        </select>
+                                    </div>
 
                                     <div>
                                         <label

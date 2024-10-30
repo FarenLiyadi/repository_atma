@@ -15,6 +15,8 @@ class Pribadi extends Model
         'user_id',
         'link_pribadi',
         'judul_data',
+        'tahun_data',
+        'semester',
         'deleted_by',
         'permission'
 
