@@ -370,7 +370,7 @@ class UserController extends Controller
                     $this->code = 106;
                     throw new Exception($this->getErrorMessage($this->code));
                 }
-                $updateData['password'] = Hash::make($password);
+                $updateData['password'] = $password;
             }
             if ($userInfo->roles == 1){
                 if ($username) { $updateData['username'] = $username; }
