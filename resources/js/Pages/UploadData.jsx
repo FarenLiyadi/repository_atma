@@ -277,7 +277,6 @@ export default function UploadData({ auth }) {
                                             </option>
                                             <option value="1">Awal</option>
                                             <option value="2">Akhir</option>
-                                            <option value="3">Pendek</option>
                                         </select>
                                     </div>
 
