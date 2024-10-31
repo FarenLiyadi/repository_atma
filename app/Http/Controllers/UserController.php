@@ -261,7 +261,7 @@ class UserController extends Controller
                 "id"            => $Userid,
                 "nidn"      => $nidn,
                 "username"      => $username,
-                "password"      => md5($password),
+                "password"      => $password,
                 "roles"         => $roles,
                 "size"         => $size,
             ]);
