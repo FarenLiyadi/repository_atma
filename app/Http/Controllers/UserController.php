@@ -261,7 +261,7 @@ class UserController extends Controller
                 "id"            => $Userid,
                 "nidn"      => $nidn,
                 "username"      => $username,
-                "password"      => Hash::make($password),
+                "password"      => md5($password),
                 "roles"         => $roles,
                 "size"         => $size,
             ]);
