@@ -22,6 +22,8 @@ return new class extends Migration
             $table->tinyInteger('size')->nullable();
             $table->double('usage',10,4)->default(0);
             $table->string('email')->nullable();
+            $table->string('fakultas')->nullable();
+            $table->string('prodi')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
@@ -60,6 +62,8 @@ return new class extends Migration
             "username"      => "faren",
             // "email"         => "superadmin@example.com",
             "password"      => "12345678",
+            "fakultas"      => "teknologi informasi",
+            "prodi"      => "manajemen",
             "roles"         => 2,
             "size"  => 10
            
@@ -70,6 +74,7 @@ return new class extends Migration
             "nidn"      => "18032007",
             // "email"         => "superadmin@example.com",
             "password"      => 12345678,
+            "fakultas"      => "pasca sarjana",
             "roles"         => 3,
             "size"  => 10
            

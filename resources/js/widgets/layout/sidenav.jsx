@@ -45,6 +45,8 @@ export function Sidenav() {
     const [openAdminData, SetOpenAdminData] = useState(false);
 
     const [username, setUsername] = useState("");
+    const [fakultas, setfakultas] = useState("");
+    const [prodi, setprodi] = useState("");
     const [roles, setroles] = useState(null);
 
     async function search() {
@@ -86,6 +88,8 @@ export function Sidenav() {
 
         setUsername(data.user.username);
         setroles(data.user.roles);
+        setfakultas(data.user.fakultas);
+        setprodi(data.user.prodi);
     }
 
     return (
@@ -137,6 +141,12 @@ export function Sidenav() {
                             </Button>
                         </a>
                     </li>
+                </ul>
+                <ul>
+                    <li className="capitalize pl-20 -mt-6">
+                        {fakultas ?? "-"}
+                    </li>
+                    <li className="capitalize pl-20 -mt-1">{prodi ?? "-"}</li>
                 </ul>
             </div>
             <div className="mx-2 ">

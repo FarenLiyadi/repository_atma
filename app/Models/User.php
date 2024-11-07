@@ -25,6 +25,8 @@ class User extends Authenticatable
         'nidn',
         'roles',
         'email',
+        'fakultas',
+        'prodi',
         'password',
         'size',
         'usage',

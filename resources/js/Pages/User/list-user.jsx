@@ -241,6 +241,12 @@ export default function listUser({ auth }) {
                                             Aktor
                                         </th>
                                         <th className="border border-slate-600 text-xl py-2">
+                                            Fakultas
+                                        </th>
+                                        <th className="border border-slate-600 text-xl py-2">
+                                            Prodi
+                                        </th>
+                                        <th className="border border-slate-600 text-xl py-2">
                                             Storage (GB)
                                         </th>
                                         <th className="border border-slate-600 text-xl py-2">
@@ -286,6 +292,12 @@ export default function listUser({ auth }) {
                                                     {user.roles == 3 && (
                                                         <p>Tata usaha</p>
                                                     )}
+                                                </td>
+                                                <td className="capitalize text-center border border-slate-700 px-3">
+                                                    {user.fakultas ?? "-"}
+                                                </td>{" "}
+                                                <td className="capitalize text-center  border border-slate-700 px-3">
+                                                    {user.prodi ?? "-"}
                                                 </td>
                                                 <td className="text-center border border-slate-700 px-3">
                                                     {user.size ?? 0} GB

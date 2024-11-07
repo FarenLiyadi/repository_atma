@@ -120,14 +120,18 @@ class PribadiController extends Controller
                 // Log::info('File path: ' . public_path(substr($filePath,1)));
 
                 $newFilename = basename($filePath); // Get the filename
-                $destinationDir = storage_path('app/private/uploads/'.$itemInfo->tahun_data.'/'.$itemInfo->user->username);
+                $prodi = Auth::user()->prodi;
+                $destinationDir = storage_path('app/private/uploads/'. Auth::user()->fakultas . '/' . ($prodi !=null ? $prodi . '/' : '') .$itemInfo->tahun_data.'/'.$itemInfo->user->username.'/pribadi');
                 // Create the directory if it doesn't exist
                     if (!file_exists($destinationDir)) {
                         mkdir($destinationDir, 0755, true); // Recursive directory creation with permissions
                     }
-                $destinationPath = storage_path('app/private/uploads/'.$itemInfo->tahun_data.'/'.$itemInfo->user->username .'/'. $newFilename);
+                $destinationPath = storage_path('app/private/uploads/'. Auth::user()->fakultas . '/' . ($prodi !=null ? $prodi . '/' : '').$itemInfo->tahun_data.'/'.$itemInfo->user->username .'/pribadi/'. $newFilename);
                 $old_file = public_path($filePath); // Path in public storage
                 // Log::info(Storage::exists($relativeFilePath) ? 'true' : 'false');
+                
+
+
                 
                 if (Storage::disk('public')->exists($relativeFilePath)&& file_exists($old_file)) {
                     if (copy($old_file, $destinationPath)) {
@@ -135,8 +139,9 @@ class PribadiController extends Controller
                         
                         Storage::disk('public')->delete($relativeFilePath);
                         
-                        $updateData['link_pribadi'] = 'uploads/'.$itemInfo->tahun_data.'/'.$itemInfo->user->username .'/'. $newFilename; 
+                        $updateData['link_pribadi'] = 'uploads/'. Auth::user()->fakultas . '/' . ($prodi !=null ? $prodi . '/' : '') .$itemInfo->tahun_data.'/'.$itemInfo->user->username.'/pribadi/'.$newFilename; 
                         $updateData['permission'] = 2; 
+                     
                         
                 }  
                 
@@ -150,9 +155,9 @@ class PribadiController extends Controller
                 // $relativeFilePath = '/'.$filePath;
                
                 // Log::info('File path: ' . $relativeFilePath);
-
+                $prodi = Auth::user()->prodi;
                 $old_file = storage_path('app/private/' . $filePath);
-                $destinationDir = public_path('storage/uploads/'.$itemInfo->tahun_data.'/'.$itemInfo->user->username);
+                $destinationDir = public_path('storage/uploads/'. Auth::user()->fakultas . '/' . ($prodi !=null ? $prodi . '/' : '') .$itemInfo->tahun_data.'/'.$itemInfo->user->username.'/pribadi');
               
                 $destinationPath = $destinationDir . '/' . $newFilename;// Path in public storage
 
@@ -160,14 +165,15 @@ class PribadiController extends Controller
                 if (!file_exists($destinationDir)) {
                     mkdir($destinationDir, 0755, true);
                 }
+                
 
                 if (Storage::disk('private')->exists('/' . $filePath) && file_exists($old_file)) {
                  if (copy($old_file, $destinationPath)) {
-                $url = '/storage/uploads/' . $itemInfo->tahun_data . '/' . $itemInfo->user->username . '/' . $newFilename;
+                $url = $destinationPath;
                 Storage::disk('private')->delete('/' . $filePath);
 
                 // Update database fields or variables
-                $updateData['link_pribadi'] = $url;
+                $updateData['link_pribadi'] = '/storage/uploads/'. Auth::user()->fakultas . '/' . ($prodi !=null ? $prodi . '/' : '') .$itemInfo->tahun_data.'/'.$itemInfo->user->username.'/pribadi/'.$newFilename;
                 $updateData['permission'] = 1;
         } }else {
                     return response()->json(['error' => 'File not found'], 404);

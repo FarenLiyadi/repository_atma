@@ -9,6 +9,8 @@ import TextInput from "@/Components/TextInput";
 
 export default function updateUser({ auth }) {
     const [roles, setRoles] = useState(1);
+    const [fakultas, setfakultas] = useState();
+    const [prodi, setprodi] = useState();
     const [username, setUsername] = useState("");
     const [nidn, setNidn] = useState("");
     const [password, setPassword] = useState("");
@@ -20,6 +22,13 @@ export default function updateUser({ auth }) {
     function change_role(value) {
         setRoles(value);
     }
+    function change_fakultas(value) {
+        setfakultas(value);
+    }
+    function change_prodi(value) {
+        setprodi(value);
+    }
+
     const queryParams = new URLSearchParams(window.location.search);
     const itemId = queryParams.get("id") ?? auth.user.id;
 
@@ -66,6 +75,8 @@ export default function updateUser({ auth }) {
         setNidn(data.nidn);
         setsize(data.size);
         setRoles(data.roles);
+        setfakultas(data.fakultas);
+        setprodi(data.prodi);
     }
 
     async function submitHandler(e) {
@@ -78,6 +89,14 @@ export default function updateUser({ auth }) {
         }
         if (!nidn.trim()) {
             errors.username = "NIDN.";
+        }
+        if (!fakultas) {
+            errors.fakultas = "Harus Memilih fakultas";
+        }
+        if (roles == 2) {
+            if (!prodi) {
+                errors.prodi = "Harus Memilih prodi.";
+            }
         }
 
         if (password) {
@@ -95,6 +114,8 @@ export default function updateUser({ auth }) {
                 item_id: itemId,
                 username: username,
                 nidn: nidn,
+                fakultas: fakultas,
+                prodi: prodi,
                 size: size,
                 password: password,
                 conf_password: password2,
@@ -377,6 +398,122 @@ export default function updateUser({ auth }) {
                                                     </option>
                                                 </select>
                                             </div>
+
+                                            <div>
+                                                <label
+                                                    htmlFor="fakultas"
+                                                    className="block mb-2 font-medium text-gray-900 dark:text-white"
+                                                >
+                                                    Fakultas
+                                                </label>
+
+                                                <select
+                                                    id="fakultas"
+                                                    required
+                                                    className="src_change w-full md:w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    value={fakultas}
+                                                    onChange={(event) =>
+                                                        change_fakultas(
+                                                            event.target.value
+                                                        )
+                                                    }
+                                                >
+                                                    <option
+                                                        disabled
+                                                        selected
+                                                        value
+                                                    >
+                                                        Pilih fakultas
+                                                    </option>
+
+                                                    <option value="ekonomi dan bisnis">
+                                                        Ekonomi dan bisnis
+                                                    </option>
+                                                    <option value="teknologi informasi">
+                                                        Teknologi Informasi
+                                                    </option>
+                                                    <option value="hukum">
+                                                        Hukum
+                                                    </option>
+                                                    <option value="psikologi">
+                                                        Psikologi
+                                                    </option>
+                                                    <option value="pasca sarjana">
+                                                        Pasca Sarjana
+                                                    </option>
+                                                </select>
+                                                {errors.fakultas && (
+                                                    <div className="text-red-600 dark:text-red-400">
+                                                        {errors.fakultas}
+                                                    </div>
+                                                )}
+                                            </div>
+                                            {roles == 2 && (
+                                                <div>
+                                                    <label
+                                                        htmlFor="prodi"
+                                                        className="block mb-2 font-medium text-gray-900 dark:text-white"
+                                                    >
+                                                        Prodi
+                                                    </label>
+                                                    <select
+                                                        id="prodi"
+                                                        required
+                                                        className="src_change w-full md:w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                        value={prodi}
+                                                        onChange={(event) =>
+                                                            change_prodi(
+                                                                event.target
+                                                                    .value
+                                                            )
+                                                        }
+                                                    >
+                                                        <option
+                                                            disabled
+                                                            selected
+                                                            value
+                                                        >
+                                                            Pilih prodi
+                                                        </option>
+
+                                                        <option value="manajemen">
+                                                            Manajemen
+                                                        </option>
+                                                        <option value="akuntansi">
+                                                            Akuntansi
+                                                        </option>
+                                                        <option value="teknik informatika">
+                                                            Teknik Informatika
+                                                        </option>
+                                                        <option value="sistem informasi">
+                                                            Sistem informasi
+                                                        </option>
+                                                        <option value="ilmu hukum">
+                                                            Ilmu Hukum
+                                                        </option>
+                                                        <option value="teknik mesin">
+                                                            Teknik Mesin
+                                                        </option>
+                                                        <option value="teknik elektro">
+                                                            Teknik Elektro
+                                                        </option>
+                                                        <option value="teknik sipil">
+                                                            Teknik Sipil
+                                                        </option>
+                                                        <option value="psikologi">
+                                                            Teknik Elektro
+                                                        </option>
+                                                        <option value="magister akuntansi">
+                                                            Magister Akuntansi
+                                                        </option>
+                                                    </select>
+                                                    {errors.prodi && (
+                                                        <div className="text-red-600 dark:text-red-400">
+                                                            {errors.prodi}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
                                         </div>
                                     )}
 

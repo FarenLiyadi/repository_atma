@@ -231,16 +231,35 @@ class UserController extends Controller
         $confPass   = $request->input('conf_password');
         $roles      = $request->input('roles');
         $size      = $request->input('size');
+        $fakultas = $request->input('fakultas');
+        $prodi = $request->input('prodi');
 
-        $validator = Validator::make($request->all(), [
-            'username'      => 'required|string|min:5|max:20',
-            'nidn'      => 'required|string|min:5|max:20',
-            'password'      => 'required|string|min:8|max:20',
-            'conf_password' => 'required|string|min:8|max:20',
-            'roles'         => 'required|numeric|min:1|max:5',
-            'size'         => 'required|numeric',
-     
-        ]);
+        if($roles == 2){
+
+            $validator = Validator::make($request->all(), [
+                'username'      => 'required|string|min:5|max:20',
+                'nidn'      => 'required|string|min:5|max:20',
+                'password'      => 'required|string|min:8|max:20',
+                'conf_password' => 'required|string|min:8|max:20',
+                'roles'         => 'required|numeric|min:1|max:5',
+                'size'         => 'required|numeric',
+                'fakultas' => 'required|string|max:255',
+                'prodi' => 'required|string|max:255',
+         
+            ]);
+        } else{
+            $validator = Validator::make($request->all(), [
+                'username'      => 'required|string|min:5|max:20',
+                'nidn'      => 'required|string|min:5|max:20',
+                'password'      => 'required|string|min:8|max:20',
+                'conf_password' => 'required|string|min:8|max:20',
+                'roles'         => 'required|numeric|min:1|max:5',
+                'size'         => 'required|numeric',
+                'fakultas' => 'required|string|max:255',
+            ]);
+
+        }
+
 
         try{
             if ($validator->fails()) {
@@ -264,6 +283,8 @@ class UserController extends Controller
                 "password"      => $password,
                 "roles"         => $roles,
                 "size"         => $size,
+                "fakultas"         => $fakultas,
+                "prodi"         => $prodi,
             ]);
 
 
@@ -335,20 +356,40 @@ class UserController extends Controller
         $confPass   = $request->input('conf_password');
         $roles      = $request->input('roles');
         $size      = $request->input('size');
+        $fakultas = $request->input('fakultas');
+        $prodi = $request->input('prodi');
       
 
-        $validator = Validator::make($request->all(), [
-            
-            'actor_id'       => 'required|string|min:36|max:36',
+       
+        if($roles == 2){
+
+            $validator = Validator::make($request->all(), [
+                'actor_id'       => 'required|string|min:36|max:36',
             'item_id'       => 'required|string|min:36|max:36',
             'username'      => 'required|string|min:5|max:20',
             'nidn'      => 'required|string|min:5|max:20',
-            'size'     => 'nullable|numeric',
+            'size'     => 'required|numeric',
             'password'      => 'nullable|string|min:8|max:20',
             'conf_password' => 'nullable|string|min:8|max:20',
-            'roles'         => 'nullable|numeric',
-          
-        ]);
+            'roles'         => 'required|numeric',
+                'fakultas' => 'required|string|max:255',
+                'prodi' => 'required|string|max:255',
+         
+            ]);
+        } else{
+            $validator = Validator::make($request->all(), [
+                'actor_id'       => 'required|string|min:36|max:36',
+                'item_id'       => 'required|string|min:36|max:36',
+                'username'      => 'required|string|min:5|max:20',
+                'nidn'      => 'required|string|min:5|max:20',
+                'size'     => 'required|numeric',
+                'password'      => 'nullable|string|min:8|max:20',
+                'conf_password' => 'nullable|string|min:8|max:20',
+                'roles'         => 'required|numeric',
+                    'fakultas' => 'required|string|max:255',
+            ]);
+
+        }
 
 
         try{
@@ -377,6 +418,8 @@ class UserController extends Controller
                 if ($nidn) { $updateData['nidn'] = $nidn; }
                 if ($roles) { $updateData['roles'] = $roles; }
                 if ($size) { $updateData['size'] = $size; }
+                if ($fakultas) { $updateData['fakultas'] = $fakultas; }
+                if ($prodi) { $updateData['prodi'] = $prodi; }
             }
 
            
@@ -491,19 +534,22 @@ class UserController extends Controller
         $tahunData = $request->input('tahun_data');
         $semester = $request->input('semester');
         $jenisData = $request->input('jenis_data');
+        $fakultas = Auth::user()->fakultas;
+        $prodi = Auth::user()->prodi;
         $permission = $request->input('permission'); // 1 or 2
         $user_id = Auth::user()->id;
+
+        $validator = Validator::make($request->all(), [
+            'judul_data' => 'required|string|max:255',
+            // 'fakultas' => 'required|string|max:255',
+            // 'prodi' => 'required|string|max:255',
+            'tahun_data' => 'required|numeric',
+            'semester' => 'required|in:1,2,3', // assuming 1 = Awal, 2 = Akhir, 3 = Pendek
+            'jenis_data' => 'required|in:1,2,3,4', // assuming 1 = Pengabdian, etc.
+            'permission' => 'required|in:1,2', // assuming 1 = Pengabdian, etc.
+            'file' => 'required|file|max:10240', // max 10 MB, adapt as needed
+        ]);
       
-       
-        
-            $validator = Validator::make($request->all(), [
-                'judul_data' => 'required|string|max:255',
-                'tahun_data' => 'required|numeric',
-                'semester' => 'required|in:1,2,3', // assuming 1 = Awal, 2 = Akhir, 3 = Pendek
-                'jenis_data' => 'required|in:1,2,3,4', // assuming 1 = Pengabdian, etc.
-                'permission' => 'required|in:1,2', // assuming 1 = Pengabdian, etc.
-                'file' => 'required|file|max:10240', // max 10 MB, adapt as needed
-            ]);
       
      
         
@@ -539,12 +585,19 @@ class UserController extends Controller
     
                 if ($permission == "1") {
                     // Public: Store the file in the 'public' disk
-                    $path = $file->storeAs('uploads/'.$tahunData.'/'.$nama, $newFilename, 'public');
+                    $path = $file->storeAs(
+                        'uploads/' . $fakultas . '/' . ($prodi !=null ? $prodi . '/' : '') . $tahunData . '/' . $nama.'/'.($jenisData =='1' ? 'pengabdian' : '').($jenisData =='2' ? 'penelitian' : '').($jenisData =='3' ? 'pengabdian' : '').($jenisData =='4' ? 'pribadi' : '') ,
+                        $newFilename,
+                        'public'
+                    );
                     $url = Storage::url($path); // Public URL
                 } else {
                     // Private: Store the file in the default 'local' disk
-                    $path = $file->storeAs('uploads/'.$tahunData.'/'.$nama, $newFilename);
-                    $url = 'uploads/'.$tahunData.'/'.$nama.'/'.$newFilename; // No public URL for private files
+                    $path = $file->storeAs(
+                        'uploads/' . $fakultas . '/' . ($prodi !=null ? $prodi . '/' : '') . $tahunData . '/' . $nama.'/'.($jenisData =='1' ? 'pengabdian/' : '').($jenisData =='2' ? 'penelitian/' : '').($jenisData =='3' ? 'pengabdian/' : '').($jenisData =='4' ? 'pribadi/' : '') ,
+                        $newFilename
+                    );
+                    $url = 'uploads/' . $fakultas . '/' . ($prodi !=null ? $prodi . '/' : '') . $tahunData . '/' . $nama.'/'.($jenisData =='1' ? 'pengabdian/' : '').($jenisData =='2' ? 'penelitian/' : '').($jenisData =='3' ? 'pengabdian/' : '').($jenisData =='4' ? 'pribadi/' : '') . $newFilename; // No public URL for private files
                 }}
     
 
