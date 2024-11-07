@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Dropdown from "@/Components/Dropdown";
 
-export default function listpengabdian({ auth }) {
+export default function listpengajaran({ auth }) {
     const [page, setPage] = useState(1);
     const [length, setLength] = useState(10);
     const [totalPages, setTotalPages] = useState(0);
@@ -77,14 +77,14 @@ export default function listpengabdian({ auth }) {
 
     async function deletePengabdian(e, id) {
         e.preventDefault();
-        if (confirm("Hapus Pengabdian?")) {
+        if (confirm("Hapus Pengajaran?")) {
             const data = {
                 actor_id: auth.user.id,
                 item_id: id,
             };
 
             try {
-                const response = await axios.post("/delete-pengabdian", data);
+                const response = await axios.post("/delete-pengajaran", data);
                 if (response.data.code !== 0) {
                     toast.error(response.data.msg, {
                         position: "top-right",
@@ -123,14 +123,14 @@ export default function listpengabdian({ auth }) {
     }
     async function updatePengabdian(e, id) {
         e.preventDefault();
-        if (confirm("update permission Pengabdian?")) {
+        if (confirm("update permission Pengajaran?")) {
             const data = {
                 actor_id: auth.user.id,
                 item_id: id,
             };
 
             try {
-                const response = await axios.post("/update-pengabdian", data);
+                const response = await axios.post("/update-pengajaran", data);
                 if (response.data.code !== 0) {
                     toast.error(response.data.msg, {
                         position: "top-right",
@@ -178,7 +178,7 @@ export default function listpengabdian({ auth }) {
         };
         // console.log(parameter);
         try {
-            const response = await axios.get("/list-pengabdian-request", {
+            const response = await axios.get("/list-pengajaran-request", {
                 params: parameter,
             });
             if (response.data.code !== 0) {
@@ -208,13 +208,13 @@ export default function listpengabdian({ auth }) {
 
     return (
         <NewAuthenticated>
-            <Head title="Pengabdian" />
+            <Head title="Pengajaran" />
 
             <div className="py-5">
                 <div className="mx-auto sm:px-6 lg:px-8 space-y-6">
                     <div className="flex flex-col p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                         <h1 className="md:text-right text-center text-3xl font-bold">
-                            Data Pengabdian
+                            Data Pengajaran
                         </h1>
                         <div className="">
                             <label className="text-dark font-bold text-2xl">
@@ -226,12 +226,12 @@ export default function listpengabdian({ auth }) {
                                         htmlFor="nama"
                                         className="block mb-2 font-medium text-gray-900 dark:text-dark"
                                     >
-                                        Judul
+                                        Aktivitas
                                     </label>
                                     <input
                                         type="text"
                                         id="nama"
-                                        placeholder="nama"
+                                        placeholder="aktivitas"
                                         className="src_change capitalize bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-dark dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         onChange={(username) => {
                                             setUsername(username.target.value);
@@ -286,7 +286,7 @@ export default function listpengabdian({ auth }) {
                 <div className="mx-auto sm:px-6 lg:px-8 space-y-6">
                     <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                         <h2 className="text-3xl text-dark font-extrabold">
-                            Daftar pengabdian
+                            Daftar pengajaran
                         </h2>
                         <div className="pt-4 w-full ">
                             <table className="table-auto text-dark w-full border-collapse border border-slate-500">
@@ -299,7 +299,7 @@ export default function listpengabdian({ auth }) {
                                             Username
                                         </th>
                                         <th className="border border-slate-600 text-xl py-2">
-                                            Judul
+                                            Aktivitas
                                         </th>
                                         <th className="border border-slate-600 text-xl py-2">
                                             Tahun

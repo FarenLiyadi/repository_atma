@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Penelitian;
 use App\Models\Pengabdian;
+use App\Models\Pengajaran;
 use App\Models\Penunjang;
 use App\Models\Pribadi;
 use App\Models\User;
@@ -141,10 +142,12 @@ class UserController extends Controller
                 $itemInfo2 = Pribadi::onlyTrashed()->with(['user','Deleted_by:id,username'])->get();
                 $itemInfo3 = Penelitian::onlyTrashed()->with(['user','Deleted_by:id,username'])->get();
                 $itemInfo4 = Penunjang::onlyTrashed()->with(['user','Deleted_by:id,username'])->get();
+                $itemInfo5 = Pengajaran::onlyTrashed()->with(['user','Deleted_by:id,username'])->get();
                 $itemInfo = collect()
                 ->merge($itemInfo1)
                 ->merge($itemInfo2)
                 ->merge($itemInfo3)
+                ->merge($itemInfo5)
                 ->merge($itemInfo4);
             } elseif($jenisData=="1"){
                 $itemInfo1 = Pengabdian::onlyTrashed()->with(['user','Deleted_by:id,username'])->get();
@@ -160,6 +163,11 @@ class UserController extends Controller
                 ->merge($itemInfo1);
             }elseif($jenisData=="4"){
                 $itemInfo1 = Pribadi::onlyTrashed()->with(['user','Deleted_by:id,username'])->get();
+                $itemInfo = collect()
+                ->merge($itemInfo1);
+            
+            }elseif($jenisData=="5"){
+                $itemInfo1 = Pengajaran::onlyTrashed()->with(['user','Deleted_by:id,username'])->get();
                 $itemInfo = collect()
                 ->merge($itemInfo1);
             }
@@ -469,7 +477,7 @@ class UserController extends Controller
 
     public function accessFile($id){
         // Fetch the record from the database
-        $pengabdian = Pengabdian::find($id) ?? Penelitian::find($id) ?? Penunjang::find($id) ?? Pribadi::find($id);
+        $pengabdian = Pengabdian::find($id) ?? Penelitian::find($id) ?? Penunjang::find($id) ?? Pribadi::find($id)?? Pengajaran::find($id);
 
        
         if (!$pengabdian) {
@@ -479,7 +487,7 @@ class UserController extends Controller
         // Check the permission level
         if ($pengabdian->permission === 1) {
              // File stored in 'public/uploads/'
-            $filePath = public_path($pengabdian->link_pengabdian ?? $pengabdian->link_penelitian ?? $pengabdian->link_penunjang?? $pengabdian->link_pribadi );
+            $filePath = public_path($pengabdian->link_pengabdian ?? $pengabdian->link_penelitian ?? $pengabdian->link_penunjang?? $pengabdian->link_pribadi ?? $pengabdian->link_pengajaran);
                 if (file_exists($filePath)) {
                     return response()->download($filePath);
                 } else {
@@ -490,7 +498,7 @@ class UserController extends Controller
             if(Auth::check() ){
                 if(Auth::user()->roles === 1 || $pengabdian->user_id == Auth::user()->id ){
 
-                    $fix_path = $pengabdian->link_pengabdian ?? $pengabdian->link_penelitian ?? $pengabdian->link_penunjang ?? $pengabdian->link_pribadi;
+                    $fix_path = $pengabdian->link_pengabdian ?? $pengabdian->link_penelitian ?? $pengabdian->link_penunjang ?? $pengabdian->link_pribadi?? $pengabdian->link_pengajaran;
                     $filePath = storage_path('app/private/' . $fix_path );
                     if (file_exists($filePath)) {
                         // Force download the file
@@ -508,7 +516,7 @@ class UserController extends Controller
             }
             if (Auth::check() && Auth::user()->id === $pengabdian->user_id ) {
                 // Serve the private file
-                $fix_path = $pengabdian->link_pengabdian ?? $pengabdian->link_penelitian ?? $pengabdian->link_penunjang ?? $pengabdian->link_pribadi;
+                $fix_path = $pengabdian->link_pengabdian ?? $pengabdian->link_penelitian ?? $pengabdian->link_penunjang ?? $pengabdian->link_pribadi?? $pengabdian->link_pengajaran;
                 $filePath = storage_path('app/private/' . $fix_path );
                 if (file_exists($filePath)) {
                     // Force download the file
@@ -545,7 +553,7 @@ class UserController extends Controller
             // 'prodi' => 'required|string|max:255',
             'tahun_data' => 'required|numeric',
             'semester' => 'required|in:1,2,3', // assuming 1 = Awal, 2 = Akhir, 3 = Pendek
-            'jenis_data' => 'required|in:1,2,3,4', // assuming 1 = Pengabdian, etc.
+            'jenis_data' => 'required|in:1,2,3,4,5', // assuming 1 = Pengabdian, etc.
             'permission' => 'required|in:1,2', // assuming 1 = Pengabdian, etc.
             'file' => 'required|file|max:10240', // max 10 MB, adapt as needed
         ]);
@@ -586,7 +594,7 @@ class UserController extends Controller
                 if ($permission == "1") {
                     // Public: Store the file in the 'public' disk
                     $path = $file->storeAs(
-                        'uploads/' . $fakultas . '/' . ($prodi !=null ? $prodi . '/' : '') . $tahunData . '/' . $nama.'/'.($jenisData =='1' ? 'pengabdian' : '').($jenisData =='2' ? 'penelitian' : '').($jenisData =='3' ? 'pengabdian' : '').($jenisData =='4' ? 'pribadi' : '') ,
+                        'uploads/' . $fakultas . '/' . ($prodi !=null ? $prodi . '/' : '') . $tahunData . '/' . $nama.'/'.($jenisData =='1' ? 'pengabdian' : '').($jenisData =='2' ? 'penelitian' : '').($jenisData =='3' ? 'pengabdian' : '').($jenisData =='4' ? 'pribadi' : '').($jenisData =='5' ? 'pengajaran' : '') ,
                         $newFilename,
                         'public'
                     );
@@ -594,10 +602,10 @@ class UserController extends Controller
                 } else {
                     // Private: Store the file in the default 'local' disk
                     $path = $file->storeAs(
-                        'uploads/' . $fakultas . '/' . ($prodi !=null ? $prodi . '/' : '') . $tahunData . '/' . $nama.'/'.($jenisData =='1' ? 'pengabdian/' : '').($jenisData =='2' ? 'penelitian/' : '').($jenisData =='3' ? 'pengabdian/' : '').($jenisData =='4' ? 'pribadi/' : '') ,
+                        'uploads/' . $fakultas . '/' . ($prodi !=null ? $prodi . '/' : '') . $tahunData . '/' . $nama.'/'.($jenisData =='1' ? 'pengabdian/' : '').($jenisData =='2' ? 'penelitian/' : '').($jenisData =='3' ? 'pengabdian/' : '').($jenisData =='4' ? 'pribadi/' : '').($jenisData =='5' ? 'pengajaran' : '') ,
                         $newFilename
                     );
-                    $url = 'uploads/' . $fakultas . '/' . ($prodi !=null ? $prodi . '/' : '') . $tahunData . '/' . $nama.'/'.($jenisData =='1' ? 'pengabdian/' : '').($jenisData =='2' ? 'penelitian/' : '').($jenisData =='3' ? 'pengabdian/' : '').($jenisData =='4' ? 'pribadi/' : '') . $newFilename; // No public URL for private files
+                    $url = 'uploads/' . $fakultas . '/' . ($prodi !=null ? $prodi . '/' : '') . $tahunData . '/' . $nama.'/'.($jenisData =='1' ? 'pengabdian/' : '').($jenisData =='2' ? 'penelitian/' : '').($jenisData =='3' ? 'pengabdian/' : '').($jenisData =='4' ? 'pribadi/' : '').($jenisData =='5' ? 'pengajaran' : '') . $newFilename; // No public URL for private files
                 }}
     
 
@@ -647,6 +655,18 @@ class UserController extends Controller
                     "user_id"            => $user_id,
                     "judul_data" => $judulData,
                     "link_pribadi" => $url,
+                    "permission"         => $permission,
+                    "tahun_data"      => $tahunData,
+                    "semester"         => $semester,
+                ]);
+            }
+            if($jenisData == 5){
+
+                Pengajaran::create([
+                    "id"            => $uploadid,
+                    "user_id"            => $user_id,
+                    "judul_data" => $judulData,
+                    "link_pengajaran" => $url,
                     "permission"         => $permission,
                     "tahun_data"      => $tahunData,
                     "semester"         => $semester,

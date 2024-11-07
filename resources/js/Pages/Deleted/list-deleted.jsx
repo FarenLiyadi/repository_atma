@@ -221,6 +221,7 @@ export default function listDeleted({ auth }) {
                                         <option value="2">Penelitian</option>
                                         <option value="3">Penunjang</option>
                                         <option value="4">Pribadi</option>
+                                        <option value="5">Pengajaran</option>
                                     </select>
                                 </div>
                             </div>
@@ -352,6 +353,9 @@ export default function listDeleted({ auth }) {
                                                             : ""}
                                                         {user.link_penunjang
                                                             ? "Penunjang"
+                                                            : ""}
+                                                        {user.link_pengajaran
+                                                            ? "Pengajaran"
                                                             : ""}
                                                     </td>
                                                 </td>

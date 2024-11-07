@@ -322,28 +322,6 @@ export function Sidenav() {
                             </li>
                         </li>
                     )}
-                    <li key="list-pengabdian">
-                        <a href="/list-pengabdian">
-                            <Button
-                                variant={
-                                    route().current("list.pengabdian.view")
-                                        ? "gradient"
-                                        : "text"
-                                }
-                                color={"blue"}
-                                className="flex items-center gap-4 px-4 capitalize"
-                                fullWidth
-                            >
-                                <FaDatabase className="w-5 h-5 text-inherit" />
-                                <Typography
-                                    color="inherit"
-                                    className="font-medium capitalize"
-                                >
-                                    Data pengabdian
-                                </Typography>
-                            </Button>
-                        </a>
-                    </li>
                     <li key="list-penelitian">
                         <a href="/list-penelitian">
                             <Button
@@ -366,6 +344,51 @@ export function Sidenav() {
                             </Button>
                         </a>
                     </li>
+                    <li key="list-pengabdian">
+                        <a href="/list-pengabdian">
+                            <Button
+                                variant={
+                                    route().current("list.pengabdian.view")
+                                        ? "gradient"
+                                        : "text"
+                                }
+                                color={"blue"}
+                                className="flex items-center gap-4 px-4 capitalize"
+                                fullWidth
+                            >
+                                <FaDatabase className="w-5 h-5 text-inherit" />
+                                <Typography
+                                    color="inherit"
+                                    className="font-medium capitalize"
+                                >
+                                    Data pengabdian
+                                </Typography>
+                            </Button>
+                        </a>
+                    </li>
+                    <li key="list-pengajaran">
+                        <a href="/list-pengajaran">
+                            <Button
+                                variant={
+                                    route().current("list.pengajaran.view")
+                                        ? "gradient"
+                                        : "text"
+                                }
+                                color={"blue"}
+                                className="flex items-center gap-4 px-4 capitalize"
+                                fullWidth
+                            >
+                                <FaDatabase className="w-5 h-5 text-inherit" />
+                                <Typography
+                                    color="inherit"
+                                    className="font-medium capitalize"
+                                >
+                                    Data pengajaran
+                                </Typography>
+                            </Button>
+                        </a>
+                    </li>
+
                     <li key="list-penunjang">
                         <a href="/list-penunjang">
                             <Button

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PenelitianController;
 use App\Http\Controllers\PengabdianController;
+use App\Http\Controllers\PengajaranController;
 use App\Http\Controllers\PenunjangController;
 use App\Http\Controllers\PribadiController;
 use App\Http\Controllers\ProfileController;
@@ -65,6 +66,18 @@ Route::middleware(['auth'])->group(function () {
            
             Route::post('/update-pengabdian', 'updatePengabdian')->name('update.pengabdian');
             Route::post('/delete-pengabdian', 'deletePengabdian')->name('delete.pengabdian');
+           
+          
+ 
+        });
+    //Pengajaran controller
+        Route::controller(PengajaranController::class)->group(function () {
+            // list pengabdian
+            Route::get('/list-pengajaran', 'listPengajaranView')->name('list.pengajaran.view');
+            Route::get('/list-pengajaran-request', 'listPengajaran')->name('list.pengajaran');
+           
+            Route::post('/update-pengajaran', 'updatePengajaran')->name('update.pengajaran');
+            Route::post('/delete-pengajaran', 'deletePengajaran')->name('delete.pengajaran');
            
           
  
