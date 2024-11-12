@@ -364,6 +364,9 @@ export default function createUser({ auth }) {
                                                 Teknologi Informasi
                                             </option>
                                             <option value="hukum">Hukum</option>
+                                            <option value="teknik">
+                                                Teknik
+                                            </option>
                                             <option value="psikologi">
                                                 Psikologi
                                             </option>
@@ -385,52 +388,174 @@ export default function createUser({ auth }) {
                                             >
                                                 Prodi
                                             </label>
-                                            <select
-                                                id="prodi"
-                                                required
-                                                className="src_change w-full md:w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                value={prodi}
-                                                onChange={(event) =>
-                                                    change_prodi(
-                                                        event.target.value
-                                                    )
-                                                }
-                                            >
-                                                <option disabled selected value>
-                                                    Pilih prodi
-                                                </option>
+                                            {fakultas ==
+                                                "ekonomi dan bisnis" && (
+                                                <select
+                                                    id="prodi"
+                                                    required
+                                                    className="src_change w-full md:w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    value={prodi}
+                                                    onChange={(event) =>
+                                                        change_prodi(
+                                                            event.target.value
+                                                        )
+                                                    }
+                                                >
+                                                    <option
+                                                        disabled
+                                                        selected
+                                                        value
+                                                    >
+                                                        Pilih prodi
+                                                    </option>
 
-                                                <option value="manajemen">
-                                                    Manajemen
-                                                </option>
-                                                <option value="akuntansi">
-                                                    Akuntansi
-                                                </option>
-                                                <option value="teknik informatika">
-                                                    Teknik Informatika
-                                                </option>
-                                                <option value="sistem informasi">
-                                                    Sistem informasi
-                                                </option>
-                                                <option value="ilmu hukum">
-                                                    Ilmu Hukum
-                                                </option>
-                                                <option value="teknik mesin">
-                                                    Teknik Mesin
-                                                </option>
-                                                <option value="teknik elektro">
-                                                    Teknik Elektro
-                                                </option>
-                                                <option value="teknik sipil">
-                                                    Teknik Sipil
-                                                </option>
-                                                <option value="psikologi">
-                                                    Teknik Elektro
-                                                </option>
-                                                <option value="magister akuntansi">
-                                                    Magister Akuntansi
-                                                </option>
-                                            </select>
+                                                    <option value="manajemen">
+                                                        Manajemen
+                                                    </option>
+                                                    <option value="akuntansi">
+                                                        Akuntansi
+                                                    </option>
+                                                </select>
+                                            )}
+                                            {fakultas ==
+                                                "teknologi informasi" && (
+                                                <select
+                                                    id="prodi"
+                                                    required
+                                                    className="src_change w-full md:w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    value={prodi}
+                                                    onChange={(event) =>
+                                                        change_prodi(
+                                                            event.target.value
+                                                        )
+                                                    }
+                                                >
+                                                    <option
+                                                        disabled
+                                                        selected
+                                                        value
+                                                    >
+                                                        Pilih prodi
+                                                    </option>
+
+                                                    <option value="teknik informatika">
+                                                        Teknik Informatika
+                                                    </option>
+                                                    <option value="sistem informasi">
+                                                        Sistem informasi
+                                                    </option>
+                                                </select>
+                                            )}
+                                            {fakultas == "hukum" && (
+                                                <select
+                                                    id="prodi"
+                                                    required
+                                                    className="src_change w-full md:w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    value={prodi}
+                                                    onChange={(event) =>
+                                                        change_prodi(
+                                                            event.target.value
+                                                        )
+                                                    }
+                                                >
+                                                    <option
+                                                        disabled
+                                                        selected
+                                                        value
+                                                    >
+                                                        Pilih prodi
+                                                    </option>
+
+                                                    <option value="ilmu hukum">
+                                                        Ilmu Hukum
+                                                    </option>
+                                                </select>
+                                            )}
+                                            {fakultas == "teknik" && (
+                                                <select
+                                                    id="prodi"
+                                                    required
+                                                    className="src_change w-full md:w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    value={prodi}
+                                                    onChange={(event) =>
+                                                        change_prodi(
+                                                            event.target.value
+                                                        )
+                                                    }
+                                                >
+                                                    <option
+                                                        disabled
+                                                        selected
+                                                        value
+                                                    >
+                                                        Pilih prodi
+                                                    </option>
+
+                                                    <option value="teknik mesin">
+                                                        Teknik Mesin
+                                                    </option>
+                                                    <option value="teknik elektro">
+                                                        Teknik Elektro
+                                                    </option>
+                                                    <option value="teknik sipil">
+                                                        Teknik Sipil
+                                                    </option>
+                                                    <option value="psikologi">
+                                                        Teknik Elektro
+                                                    </option>
+                                                </select>
+                                            )}
+                                            {fakultas == "pasca sarjana" && (
+                                                <select
+                                                    id="prodi"
+                                                    required
+                                                    className="src_change w-full md:w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    value={prodi}
+                                                    onChange={(event) =>
+                                                        change_prodi(
+                                                            event.target.value
+                                                        )
+                                                    }
+                                                >
+                                                    <option
+                                                        disabled
+                                                        selected
+                                                        value
+                                                    >
+                                                        Pilih prodi
+                                                    </option>
+
+                                                    <option value="magister akuntansi">
+                                                        Magister Akuntansi
+                                                    </option>
+                                                </select>
+                                            )}
+                                            {fakultas == "psikologi" && (
+                                                <select
+                                                    id="prodi"
+                                                    required
+                                                    className="src_change w-full md:w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    value={prodi}
+                                                    onChange={(event) =>
+                                                        change_prodi(
+                                                            event.target.value
+                                                        )
+                                                    }
+                                                >
+                                                    <option
+                                                        disabled
+                                                        selected
+                                                        value
+                                                    >
+                                                        Pilih prodi
+                                                    </option>
+
+                                                    <option value="psikolgi">
+                                                        psikologi
+                                                    </option>
+                                                </select>
+                                            )}
+
                                             {errors.prodi && (
                                                 <div className="text-red-600 dark:text-red-400">
                                                     {errors.prodi}
