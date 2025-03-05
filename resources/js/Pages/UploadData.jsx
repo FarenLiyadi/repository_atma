@@ -180,14 +180,6 @@ export default function UploadData({ auth }) {
             <div className="py-5">
                 <div className="mx-auto sm:px-6 lg:px-8 space-y-6">
                     <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                        <div className="">
-                            <p className="font-bold text-xl text-red-900">
-                                NOTED :
-                            </p>
-                            <ul className="uppercase text-red-900 list-disc list-inside">
-                                <li>Max size per file hanya 10 Mb</li>
-                            </ul>
-                        </div>
                         <div>
                             <form onSubmit={submitHandler}>
                                 <div className="my-2 grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -367,6 +359,7 @@ export default function UploadData({ auth }) {
                                         >
                                             File yang akan di upload
                                         </label>
+
                                         <input
                                             type="file"
                                             id="selectedFile"
@@ -374,6 +367,9 @@ export default function UploadData({ auth }) {
                                             onChange={handleFileChange}
                                             required
                                         />
+                                        <div className="text-red-600 dark:text-red-400">
+                                            MAX SIZE FILE 10 MB
+                                        </div>
                                         {errors.selectedFile && (
                                             <div className="text-red-600 dark:text-red-400">
                                                 {errors.selectedFile}
