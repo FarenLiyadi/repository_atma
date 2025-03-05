@@ -18,7 +18,11 @@ class Pengajaran extends Model
         'tahun_data',
         'semester',
         'deleted_by',
-        'permission'
+        'permission',
+        'visitor',
+        'kode_sandi',
+        'percobaan',
+        'guest_mode',
 
     ];
 
@@ -29,5 +33,12 @@ class Pengajaran extends Model
     public function Deleted_by()
     {
         return $this->belongsTo(User::class,'deleted_by');
+    }
+    protected function visitor(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => json_decode($value, true),
+            set: fn ($value) => json_encode($value),
+        );
     }
 }

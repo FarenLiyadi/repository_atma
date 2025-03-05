@@ -5,7 +5,16 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Head } from "@inertiajs/react";
 
-export default function Tes({ user_tu, user_dosen, auth }) {
+export default function Tes({
+    user_tu,
+    user_dosen,
+    auth,
+    calculate,
+    calculate2,
+    drive,
+}) {
+    console.log(calculate);
+
     return (
         <div>
             <Head title="Dashboard" />
@@ -16,6 +25,9 @@ export default function Tes({ user_tu, user_dosen, auth }) {
                     roles={auth.user.roles}
                     size={auth.user.size}
                     usage={auth.user.usage}
+                    calculate={calculate}
+                    calculate2={calculate2}
+                    drive={drive}
                 />
             </NewAuthenticated>
         </div>

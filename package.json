@@ -32,6 +32,7 @@
         "@splidejs/react-splide": "^0.7.12",
         "apexcharts": "^3.44.0",
         "chart.js": "^4.4.6",
+        "chartjs-plugin-datalabels": "^2.2.0",
         "flatpickr": "^4.6.13",
         "font-awesome": "^4.7.0",
         "framer-motion": "^11.2.4",
@@ -52,6 +53,7 @@
         "react-select-search": "^4.1.7",
         "react-to-print": "^2.15.1",
         "react-toastify": "^10.0.5",
+        "recharts": "^2.15.1",
         "yet-another-react-lightbox": "^3.21.3"
     }
 }

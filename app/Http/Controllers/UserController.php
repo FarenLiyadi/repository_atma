@@ -477,6 +477,7 @@ class UserController extends Controller
 
     public function accessFile($id){
         // Fetch the record from the database
+       
         $pengabdian = Pengabdian::find($id) ?? Penelitian::find($id) ?? Penunjang::find($id) ?? Pribadi::find($id)?? Pengajaran::find($id);
 
        
@@ -495,8 +496,9 @@ class UserController extends Controller
                 }
         } else {
             // Private file: Only the owner can access
+           
             if(Auth::check() ){
-                if(Auth::user()->roles === 1 || $pengabdian->user_id == Auth::user()->id ){
+                if(Auth::user()->roles === 1 || $pengabdian->user_id == Auth::user()->id ||$pengabdian::orWhereRaw("JSON_CONTAINS(visitor, ?, '$')", [json_encode(['id' => Auth::user()->id])])){
 
                     $fix_path = $pengabdian->link_pengabdian ?? $pengabdian->link_penelitian ?? $pengabdian->link_penunjang ?? $pengabdian->link_pribadi?? $pengabdian->link_pengajaran;
                     $filePath = storage_path('app/private/' . $fix_path );
@@ -529,6 +531,59 @@ class UserController extends Controller
                 return view('errors.403'); // Return the 403 view
             }
         }
+    }
+
+    public function guest_download($id,$kode){
+        // Fetch the record from the database
+       
+        $pengabdian = Pengabdian::find($id) ?? Penelitian::find($id) ?? Penunjang::find($id) ?? Pribadi::find($id)?? Pengajaran::find($id);
+        // dd($pengabdian->link_pengabdian);
+
+       
+        if (!$pengabdian) {
+            return response()->json(['message' => 'File not found'], 404);
+        }
+
+        if($kode){
+            if($pengabdian->guest_mode == 1){
+                if($pengabdian->percobaan > 0){
+                    if ($pengabdian->kode_sandi === $kode) {
+                        $fix_path = $pengabdian->link_pengabdian ?? $pengabdian->link_penelitian ?? $pengabdian->link_penunjang ?? $pengabdian->link_pribadi?? $pengabdian->link_pengajaran;
+                        $filePath = storage_path('app/private/' . $fix_path );
+                        if (file_exists($filePath)) {
+                            // Force download the file
+                            return response()->download($filePath);
+                        }else {
+                            return view('errors.403'); // Return a 404 view if the file is not found
+                        }
+                    } else{
+                        if ($pengabdian->percobaan > 0){
+                            $updateData['percobaan'] = $pengabdian->percobaan - 1; 
+                            $pengabdian->update($updateData);
+                            $pengabdian->save();
+                        }
+                        return view ('errors.401',[
+                            'id'=>$id
+                        ]);
+                    }
+                } else{
+                    return view('errors.400'); // Return a 404 view if the file is not found
+                }
+            } else{
+
+                abort(403); // Return a 404 view if the file is not found
+            }
+        }
+       
+    }
+    public function guest($id){
+        $pengabdian = Pengabdian::find($id) ?? Penelitian::find($id) ?? Penunjang::find($id) ?? Pribadi::find($id)?? Pengajaran::find($id);
+        if($pengabdian->guest_mode == 0){
+            abort(403);
+        }
+        return Inertia::render('Guest', [
+            'nilai'=>$pengabdian->percobaan
+        ]);
     }
 
     public function upload_data_request(Request $request){
@@ -602,10 +657,10 @@ class UserController extends Controller
                 } else {
                     // Private: Store the file in the default 'local' disk
                     $path = $file->storeAs(
-                        'uploads/' . $fakultas . '/' . ($prodi !=null ? $prodi . '/' : '') . $tahunData . '/' . $nama.'/'.($jenisData =='1' ? 'pengabdian/' : '').($jenisData =='2' ? 'penelitian/' : '').($jenisData =='3' ? 'pengabdian/' : '').($jenisData =='4' ? 'pribadi/' : '').($jenisData =='5' ? 'pengajaran' : '') ,
+                        'uploads/' . $fakultas . '/' . ($prodi !=null ? $prodi . '/' : '') . $tahunData . '/' . $nama.'/'.($jenisData =='1' ? 'pengabdian/' : '').($jenisData =='2' ? 'penelitian/' : '').($jenisData =='3' ? 'pengabdian/' : '').($jenisData =='4' ? 'pribadi/' : '').($jenisData =='5' ? 'pengajaran/' : '') ,
                         $newFilename
                     );
-                    $url = 'uploads/' . $fakultas . '/' . ($prodi !=null ? $prodi . '/' : '') . $tahunData . '/' . $nama.'/'.($jenisData =='1' ? 'pengabdian/' : '').($jenisData =='2' ? 'penelitian/' : '').($jenisData =='3' ? 'pengabdian/' : '').($jenisData =='4' ? 'pribadi/' : '').($jenisData =='5' ? 'pengajaran' : '') . $newFilename; // No public URL for private files
+                    $url = 'uploads/' . $fakultas . '/' . ($prodi !=null ? $prodi . '/' : '') . $tahunData . '/' . $nama.'/'.($jenisData =='1' ? 'pengabdian/' : '').($jenisData =='2' ? 'penelitian/' : '').($jenisData =='3' ? 'pengabdian/' : '').($jenisData =='4' ? 'pribadi/' : '').($jenisData =='5' ? 'pengajaran/' : '') . $newFilename; // No public URL for private files
                 }}
     
 
@@ -622,6 +677,7 @@ class UserController extends Controller
                     "tahun_data"      => $tahunData,
                     "semester"         => $semester,
                     "permission"         => $permission,
+                    "visitor" => json_encode([])
                 ]);
             }
             if($jenisData == 2){
@@ -634,6 +690,7 @@ class UserController extends Controller
                     "tahun_data"      => $tahunData,
                     "semester"         => $semester,
                     "permission"         => $permission,
+                    "visitor" => json_encode([])
                 ]);
             }
             if($jenisData == 3){
@@ -646,6 +703,7 @@ class UserController extends Controller
                     "tahun_data"      => $tahunData,
                     "semester"         => $semester,
                     "permission"         => $permission,
+                    "visitor" => json_encode([])
                 ]);
             }
             if($jenisData == 4){
@@ -658,6 +716,7 @@ class UserController extends Controller
                     "permission"         => $permission,
                     "tahun_data"      => $tahunData,
                     "semester"         => $semester,
+                    "visitor" => json_encode([])
                 ]);
             }
             if($jenisData == 5){
@@ -670,6 +729,7 @@ class UserController extends Controller
                     "permission"         => $permission,
                     "tahun_data"      => $tahunData,
                     "semester"         => $semester,
+                    "visitor" => json_encode([])
                 ]);
             }
             $itemInfo->update($updateData);

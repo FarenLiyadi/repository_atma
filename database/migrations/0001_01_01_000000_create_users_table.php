@@ -48,7 +48,7 @@ return new class extends Migration
         });
         User::create([
             "id"            => Uuid::uuid1(),
-            "nidn"      => "13032000",
+            "nidn"      => "superadmin",
             "username"      => "superadmin",
             // "email"         => "superadmin@example.com",
             "password"      => "12345678",
@@ -58,8 +58,8 @@ return new class extends Migration
         ]);
         User::create([
             "id"            => Uuid::uuid1(),
-            "nidn"      => "27032001",
-            "username"      => "faren",
+            "nidn"      => "dosen1",
+            "username"      => "dosen1",
             // "email"         => "superadmin@example.com",
             "password"      => "12345678",
             "fakultas"      => "teknologi informasi",
@@ -70,8 +70,8 @@ return new class extends Migration
         ]);
         User::create([
             "id"            => Uuid::uuid1(),
-            "username"      => "alvin",
-            "nidn"      => "18032007",
+            "username"      => "tu1",
+            "nidn"      => "tu1",
             // "email"         => "superadmin@example.com",
             "password"      => 12345678,
             "fakultas"      => "pasca sarjana",

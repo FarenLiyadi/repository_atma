@@ -7,6 +7,10 @@ import {
 } from "@material-tailwind/react";
 import PropTypes from "prop-types";
 import { FaBuildingUser } from "react-icons/fa6";
+import { FaCloudArrowUp } from "react-icons/fa6";
+import { FaDownload } from "react-icons/fa6";
+// import { FaCloudArrowUp } from "react-icons/fa6";
+import { FaServer } from "react-icons/fa6";
 import { GiTeacher } from "react-icons/gi";
 
 export function StatisticsCard({ color, icon, title, value, footer }) {
@@ -21,6 +25,9 @@ export function StatisticsCard({ color, icon, title, value, footer }) {
             >
                 {icon == "tata_usaha" && <FaBuildingUser className="h-8 w-8" />}
                 {icon == "dosen" && <GiTeacher className="h-8 w-8" />}
+                {icon == "server" && <FaServer className="h-8 w-8" />}
+                {icon == "used" && <FaDownload className="h-8 w-8" />}
+                {icon == "free" && <FaCloudArrowUp className="h-8 w-8" />}
             </CardHeader>
             <CardBody className="p-4 text-right">
                 <Typography

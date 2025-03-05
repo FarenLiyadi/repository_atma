@@ -326,7 +326,8 @@ export function Sidenav() {
                         <a href="/list-penelitian">
                             <Button
                                 variant={
-                                    route().current("list.penelitian.view")
+                                    route().current("list.penelitian.view") ||
+                                    route().current("update.penelitian.view")
                                         ? "gradient"
                                         : "text"
                                 }
@@ -348,7 +349,8 @@ export function Sidenav() {
                         <a href="/list-pengabdian">
                             <Button
                                 variant={
-                                    route().current("list.pengabdian.view")
+                                    route().current("list.pengabdian.view") ||
+                                    route().current("update.pengabdian.view")
                                         ? "gradient"
                                         : "text"
                                 }
@@ -370,7 +372,8 @@ export function Sidenav() {
                         <a href="/list-pengajaran">
                             <Button
                                 variant={
-                                    route().current("list.pengajaran.view")
+                                    route().current("list.pengajaran.view") ||
+                                    route().current("update.pengajaran.view")
                                         ? "gradient"
                                         : "text"
                                 }
@@ -393,7 +396,8 @@ export function Sidenav() {
                         <a href="/list-penunjang">
                             <Button
                                 variant={
-                                    route().current("list.penunjang.view")
+                                    route().current("list.penunjang.view") ||
+                                    route().current("update.penunjang.view")
                                         ? "gradient"
                                         : "text"
                                 }
@@ -415,7 +419,8 @@ export function Sidenav() {
                         <a href="/list-pribadi">
                             <Button
                                 variant={
-                                    route().current("list.pribadi.view")
+                                    route().current("list.pribadi.view") ||
+                                    route().current("update.pribadi.view")
                                         ? "gradient"
                                         : "text"
                                 }

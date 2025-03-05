@@ -48,7 +48,8 @@ class PenunjangController extends Controller
             if ($akses !== 1) {
                 $itemInfo->where(function ($query) use ($auth) {
                     $query->where('permission', '1')
-                          ->orWhere('user_id', $auth);
+                          ->orWhere('user_id', $auth)
+                          ->orWhereRaw("JSON_CONTAINS(visitor, ?, '$')", [json_encode(['id' => $auth])]);
                 });
             }
             
@@ -260,6 +261,63 @@ class PenunjangController extends Controller
 
             $this->code = 0;
             $this->message = "Delete Penunjang Success";
+        }catch(Exception $e){
+            $this->message = $e->getMessage();
+        }
+
+        return $this->createResponse($this->dataMsg, $this->code, $this->message);
+    }
+    public function updatePenunjangView($id){
+        // Log::info($id);
+        $itemInfo = Penunjang::where('id',$id)->first();
+        $people = User::where('roles','!=',1)->where('id','!=',$itemInfo->user_id)->orderBy('username','ASC')->get();
+
+      
+        return Inertia::render('Penunjang/update-visitor', [
+            'detailPenelitian'=>$itemInfo,
+            'people'=>$people,
+        ]);
+    }
+    public function updatePenunjangVisitor(Request $request){
+        $itemId     = $request->input('item_id');
+        $auth = Auth::user()->id;
+        $visitor = $request->input('visitor');
+        $percobaan = $request->input('percobaan');
+        $guest_mode = $request->input('guest_mode');
+        $kode_sandi = $request->input('kode_sandi');
+
+        
+        
+        try{
+            if (!$itemId) {
+                $this->code = 1;
+                throw new Exception($this->getErrorMessage($this->code));
+            }
+           
+
+            $itemInfo = Penunjang::where('id', $itemId)->where('deleted_at', null)->first();
+            if($itemInfo->user_id != $auth ){
+                $this->code = 901;
+                throw new Exception($this->getErrorMessage($this->code));
+            }
+            if (!$itemInfo){
+                $this->code = 104;
+                throw new Exception($this->getErrorMessage($this->code));
+            }
+
+            $updateData['visitor'] = $visitor; 
+            $updateData['percobaan'] = $percobaan; 
+            $updateData['guest_mode'] = $guest_mode; 
+            $updateData['kode_sandi'] = $kode_sandi; 
+            
+
+           
+            $itemInfo->update($updateData);
+            $itemInfo->save();
+          
+
+            $this->code = 0;
+            $this->message = "Change visitor data Pengajaran Success";
         }catch(Exception $e){
             $this->message = $e->getMessage();
         }
