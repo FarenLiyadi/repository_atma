@@ -13,7 +13,7 @@ export default function Tes({
     calculate2,
     drive,
 }) {
-    console.log(calculate);
+    // console.log(calculate);
 
     return (
         <div>

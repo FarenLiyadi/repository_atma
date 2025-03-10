@@ -16,12 +16,30 @@ import {
 } from "@material-tailwind/react";
 // import { PieChart } from "react-minimal-pie-chart";
 // import Chart from "react-apexcharts";
-import { Pie } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Bar, Pie } from "react-chartjs-2";
+import {
+    Chart as ChartJS,
+    ArcElement,
+    Tooltip,
+    Legend,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+} from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 
 // Register Chart.js components
-ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
+ChartJS.register(
+    ArcElement,
+    Tooltip,
+    Legend,
+    ChartDataLabels,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title
+);
 
 import { StatisticsCard } from "@/widgets/cards";
 
@@ -112,6 +130,8 @@ export function Home({
     }));
     // console.log(data2);
 
+    // console.log(data2);
+
     const chartData2 = {
         labels: data2.map((item) => item.type),
         datasets: [
@@ -141,6 +161,7 @@ export function Home({
                     "#8D0B41",
                     "#F26B0F",
                 ],
+                barPercentage: 1,
             },
         ],
     };
@@ -148,15 +169,38 @@ export function Home({
         responsive: true,
         plugins: {
             legend: {
-                position: "bottom",
+                display: false,
+                labels: {
+                    color: "white",
+                },
+            },
+            tooltip: {
+                titleColor: "white", // Set tooltip title color
+                bodyColor: "white", // Set tooltip body text color
+            },
+            title: {
+                display: false,
+                text: "Bar Chart Example",
             },
             datalabels: {
-                color: "#fff", // Label color
+                color: "white", // Set the data label inside bars to white
+                anchor: "center",
+                align: "center",
                 font: {
-                    size: 12,
                     weight: "bold",
+                    size: 14,
                 },
-                formatter: (value) => `${value} MB`, // Display size in MB
+            },
+        },
+
+        scales: {
+            y: {
+                beginAtZero: true,
+
+                ticks: {
+                    stepSize: 1, // Set interval between numbers to 1
+                    color: "black", // Optional: Change label color
+                },
             },
         },
     };
@@ -221,14 +265,14 @@ export function Home({
                         <Typography>Usage : {usage} GB</Typography>
                         <Typography>Free Space : {size - usage} GB</Typography>
                         <br />
-                        <div className="flex flex-wrap  gap-20">
-                            <div className="">
-                                <Typography>Per Extension</Typography>
+                        <div className="flex flex-wrap gap-20  w-full">
+                            <div className="w-64">
+                                <Typography>Per Extension (MB)</Typography>
                                 <Pie data={chartData} options={options} />
                             </div>
-                            <div className="">
-                                <Typography>Per Kategori</Typography>
-                                <Pie data={chartData2} options={options2} />
+                            <div className="w-1/2">
+                                <Typography>Per Kategori (MB)</Typography>
+                                <Bar data={chartData2} options={options2} />
                             </div>
                         </div>
                     </div>
