@@ -24,7 +24,7 @@ class UserController extends Controller
 {
     // View section
     public function listUserView(){
-        broadcast(new OrderCreated(['name' => 'test 1', 'price' => 201]));
+        // broadcast(new OrderCreated(['name' => 'test 1', 'price' => 201]));
         // broadcast(new OrderCreated(['name' => 'test 2', 'price' => 300]));
         return Inertia::render('User/list-user', [
         ]);
