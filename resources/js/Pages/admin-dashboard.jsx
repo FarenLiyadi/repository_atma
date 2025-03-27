@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Head } from "@inertiajs/react";
 // import Echo from "laravel-echo";
 
-import Pusher from "pusher-js";
+// import Pusher from "pusher-js";
 
 export default function Tes({
     user_tu,
