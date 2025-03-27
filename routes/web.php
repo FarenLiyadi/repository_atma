@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\BidPlacedEvent;
 use App\Http\Controllers\PenelitianController;
 use App\Http\Controllers\PengabdianController;
 use App\Http\Controllers\PengajaranController;
@@ -14,6 +15,7 @@ use App\Models\Penunjang;
 use App\Models\Pribadi;
 use App\Models\User;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
@@ -24,8 +26,10 @@ Route::get('/', function () {
     return redirect('/dashboard');
 });
 Route::get('/file/{id}', [UserController::class, 'accessFile']);
-Route::get('/guest-download/{id}/{kode}', [UserController::class, 'guest_download']);
+Route::get('/guest-download/{id}/{kode}', [UserController::class, 'guest_download'])->name('guest.download');
 Route::get('/guest/{id}', [UserController::class, 'guest']);
+
+
 
 
 Route::middleware(['auth'])->group(function () {

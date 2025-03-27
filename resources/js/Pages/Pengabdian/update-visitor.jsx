@@ -218,7 +218,6 @@ export default function updateVisitor({ auth, detailPenelitian, people }) {
                                                         event.target.value
                                                     )
                                                 }
-                                                required={guest_mode}
                                             />
                                             {errors.kode_sandi && (
                                                 <div className="text-red-600 dark:text-red-400">

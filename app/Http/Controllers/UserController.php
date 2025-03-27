@@ -18,11 +18,14 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use Ramsey\Uuid\Uuid;
+use App\Events\OrderCreated;
 
 class UserController extends Controller
 {
     // View section
     public function listUserView(){
+        broadcast(new OrderCreated(['name' => 'test 1', 'price' => 201]));
+        // broadcast(new OrderCreated(['name' => 'test 2', 'price' => 300]));
         return Inertia::render('User/list-user', [
         ]);
     }
@@ -535,7 +538,6 @@ class UserController extends Controller
 
     public function guest_download($id,$kode){
         // Fetch the record from the database
-       
         $pengabdian = Pengabdian::find($id) ?? Penelitian::find($id) ?? Penunjang::find($id) ?? Pribadi::find($id)?? Pengajaran::find($id);
         // dd($pengabdian->link_pengabdian);
 
@@ -545,9 +547,12 @@ class UserController extends Controller
         }
 
         if($kode){
+            if ($kode == 'null'){
+                $kode = null;
+               }
             if($pengabdian->guest_mode == 1){
                 if($pengabdian->percobaan > 0){
-                    if ($pengabdian->kode_sandi === $kode) {
+                    if ($pengabdian->kode_sandi === $kode ) {
                         $fix_path = $pengabdian->link_pengabdian ?? $pengabdian->link_penelitian ?? $pengabdian->link_penunjang ?? $pengabdian->link_pribadi?? $pengabdian->link_pengajaran;
                         $filePath = storage_path('app/private/' . $fix_path );
                         if (file_exists($filePath)) {
@@ -578,11 +583,16 @@ class UserController extends Controller
     }
     public function guest($id){
         $pengabdian = Pengabdian::find($id) ?? Penelitian::find($id) ?? Penunjang::find($id) ?? Pribadi::find($id)?? Pengajaran::find($id);
+        if($pengabdian->kode_sandi === null){
+            return redirect()->route('guest.download', ['id' => $id, 'kode' =>'null']);
+        }
         if($pengabdian->guest_mode == 0){
             abort(403);
         }
+        
         return Inertia::render('Guest', [
-            'nilai'=>$pengabdian->percobaan
+            'nilai'=>$pengabdian->percobaan,
+            'data'=>$pengabdian
         ]);
     }
 
