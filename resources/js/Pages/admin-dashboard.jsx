@@ -37,16 +37,16 @@ export default function Tes({
     //     };
     // }, []);
 
+    // {orders.map((order, index) => (
+    //     <li key={index}>
+    //         {order.name} - ${order.price}
+    //     </li>
+    // ))}
     return (
         <div>
             <Head title="Dashboard" />
             <NewAuthenticated>
                 <p>new order</p>
-                {orders.map((order, index) => (
-                    <li key={index}>
-                        {order.name} - ${order.price}
-                    </li>
-                ))}
                 <Home
                     user_dosen={user_dosen}
                     user_tu={user_tu}
