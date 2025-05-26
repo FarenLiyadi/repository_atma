@@ -11,6 +11,7 @@ export default function createUser({ auth }) {
     const [username, setUsername] = useState("");
     const [nidn, setNidn] = useState("");
     const [size, setsize] = useState(0);
+    const [upload_size, setupload_size] = useState(0);
     const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
     const [show, setshow] = useState(false);
@@ -61,6 +62,7 @@ export default function createUser({ auth }) {
                 fakultas: fakultas,
                 prodi: prodi,
                 size: size,
+                upload_size: upload_size,
                 password: password,
                 conf_password: password2,
                 roles: role,
@@ -303,6 +305,32 @@ export default function createUser({ auth }) {
                                         {errors.size && (
                                             <div className="text-red-600 dark:text-red-400">
                                                 {errors.size}
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <label
+                                            htmlFor="nama"
+                                            className="block mb-2 font-medium text-gray-900 dark:text-white"
+                                        >
+                                            Max Upload Size (MB)
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="uploadsizestorage"
+                                            placeholder="Upload Size File (Mb)"
+                                            className="src_change w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            value={upload_size}
+                                            onChange={(event) => {
+                                                setupload_size(
+                                                    event.target.value
+                                                );
+                                            }}
+                                            required
+                                        />
+                                        {errors.upload_size && (
+                                            <div className="text-red-600 dark:text-red-400">
+                                                {errors.upload_size}
                                             </div>
                                         )}
                                     </div>

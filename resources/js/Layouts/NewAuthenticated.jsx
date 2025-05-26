@@ -128,7 +128,7 @@ export function NewAuthenticated({ children }) {
     }, []);
 
     return (
-        <div className="min-h-screen bg-blue-gray-50/50">
+        <div className="min-h-screen flex flex-col bg-blue-gray-50/50">
             <ToastContainer
                 position="top-right"
                 autoClose={3000}
@@ -144,7 +144,7 @@ export function NewAuthenticated({ children }) {
                         : "/img/logo-ct-dark.png"
                 }
             />
-            <div className="p-4 xl:ml-80">
+            <div className="p-4 flex-1 xl:ml-80">
                 <DashboardNavbar />
 
                 <main> {children}</main>

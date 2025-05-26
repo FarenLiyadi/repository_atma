@@ -4,9 +4,6 @@ import { Home } from "./dashboard/home";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Head } from "@inertiajs/react";
-// import Echo from "laravel-echo";
-
-// import Pusher from "pusher-js";
 
 export default function Tes({
     user_tu,
@@ -15,38 +12,39 @@ export default function Tes({
     calculate,
     calculate2,
     drive,
+    lastFile,
 }) {
     // const [orders, setOrders] = useState([]);
-    // window.Echo = new Echo({
-    //     broadcaster: "reverb",
-    //     key: import.meta.env.VITE_REVERB_APP_KEY,
-    //     wsHost: import.meta.env.VITE_REVERB_HOST,
-    //     wsPort: import.meta.env.VITE_REVERB_PORT ?? 80,
-    //     wssPort: import.meta.env.VITE_REVERB_PORT ?? 443,
-    //     forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? "https") === "https",
-    //     enabledTransports: ["ws", "wss"],
-    // });
+
     // useEffect(() => {
     //     window.Echo.channel("orders").listen("OrderCreated", (event) => {
     //         console.log("Received order:", event);
     //         setOrders((prev) => [...prev, event]);
+    //         toast.info("there is new data", {
+    //             position: "top-right",
+    //             autoClose: 3000,
+    //             closeOnClick: true,
+    //             draggable: true,
+    //             theme: "light",
+    //         });
     //     });
 
     //     return () => {
     //         window.Echo.leaveChannel("orders");
     //     };
     // }, []);
-
+    // <p>new order</p>
     // {orders.map((order, index) => (
     //     <li key={index}>
     //         {order.name} - ${order.price}
     //     </li>
     // ))}
+    // console.log(lastFile);
+
     return (
         <div>
             <Head title="Dashboard" />
             <NewAuthenticated>
-                <p>new order</p>
                 <Home
                     user_dosen={user_dosen}
                     user_tu={user_tu}
@@ -56,6 +54,8 @@ export default function Tes({
                     calculate={calculate}
                     calculate2={calculate2}
                     drive={drive}
+                    lastFile={lastFile}
+                    upload_size={auth.user.upload_size}
                 />
             </NewAuthenticated>
         </div>

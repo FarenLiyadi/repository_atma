@@ -174,12 +174,14 @@ Route::middleware(['auth'])->group(function () {
             $driveInfo = getDriveSize();
         }
         //   Log::info(Auth::user()->roles);
+        $lastFile = (new UserController())->getRecentFile();
             return Inertia::render('admin-dashboard',[
                 'user_dosen' => $user_dosen,
                 'user_tu' => $user_tu,
                 'calculate' => $formattedTotalFileSizes,
                 'calculate2' => $fileSizes,
                 'drive' => $driveInfo,
+                'lastFile'=>$lastFile,
                     ]);
             
         })->name('dashboard');

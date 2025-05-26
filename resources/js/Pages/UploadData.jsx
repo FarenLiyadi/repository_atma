@@ -8,7 +8,18 @@ export default function UploadData({ auth }) {
     const [selectedFile, setSelectedFile] = useState(null);
 
     const handleFileChange = (event) => {
-        setSelectedFile(event.target.files[0]);
+        const file = event.target.files[0];
+        if (file) {
+            const maxSize = auth.user.upload_size * 1024 * 1024;
+
+            if (file.size > maxSize) {
+                alert("Ukuran file maksimal 10MB.");
+                event.target.value = ""; // reset input
+                return;
+            }
+
+            setSelectedFile(event.target.files[0]);
+        }
     };
 
     const [judul_data, setjudul_data] = useState("");
@@ -87,6 +98,13 @@ export default function UploadData({ auth }) {
             formData.append("file", selectedFile);
 
             console.log("Submit", formData);
+
+            const isValidTahunData = /^(\d{4})\/(\d{4})$/.test(tahun_data);
+
+            if (!isValidTahunData) {
+                alert("Format tahun harus seperti 2023/2024");
+                return;
+            }
 
             try {
                 const response = await axios.post("/upload-data", formData, {
@@ -288,7 +306,7 @@ export default function UploadData({ auth }) {
                                         <input
                                             type="text"
                                             id="tahun_data"
-                                            placeholder="Tahun data"
+                                            placeholder="Mis. 2023/2024"
                                             className="src_change w-full md:w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             value={tahun_data}
                                             onChange={(event) =>
@@ -353,12 +371,18 @@ export default function UploadData({ auth }) {
                                     </div>
 
                                     <div>
-                                        <label
-                                            htmlFor="selectedFile"
-                                            className="block mb-2 font-medium text-gray-900 dark:text-white"
-                                        >
-                                            File yang akan di upload
-                                        </label>
+                                        <div className=" flex ">
+                                            <label
+                                                htmlFor="selectedFile"
+                                                className="block mb-2 font-medium text-gray-900 dark:text-white"
+                                            >
+                                                File yang akan di upload{" "}
+                                            </label>
+                                            <div className="text-red-600 pl-2 text-xs dark:text-red-400">
+                                                *MAX SIZE FILE{" "}
+                                                {auth.user.upload_size} MB
+                                            </div>
+                                        </div>
 
                                         <input
                                             type="file"
@@ -367,9 +391,7 @@ export default function UploadData({ auth }) {
                                             onChange={handleFileChange}
                                             required
                                         />
-                                        <div className="text-red-600 dark:text-red-400">
-                                            MAX SIZE FILE 10 MB
-                                        </div>
+
                                         {errors.selectedFile && (
                                             <div className="text-red-600 dark:text-red-400">
                                                 {errors.selectedFile}

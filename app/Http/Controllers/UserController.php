@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use Ramsey\Uuid\Uuid;
 use App\Events\OrderCreated;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -242,6 +243,7 @@ class UserController extends Controller
         $confPass   = $request->input('conf_password');
         $roles      = $request->input('roles');
         $size      = $request->input('size');
+        $upload_size      = $request->input('upload_size');
         $fakultas = $request->input('fakultas');
         $prodi = $request->input('prodi');
 
@@ -254,6 +256,7 @@ class UserController extends Controller
                 'conf_password' => 'required|string|min:8|max:20',
                 'roles'         => 'required|numeric|min:1|max:5',
                 'size'         => 'required|numeric',
+                'upload_size'         => 'required|numeric',
                 'fakultas' => 'required|string|max:255',
                 'prodi' => 'required|string|max:255',
          
@@ -294,6 +297,7 @@ class UserController extends Controller
                 "password"      => $password,
                 "roles"         => $roles,
                 "size"         => $size,
+                "upload_size"         => $upload_size,
                 "fakultas"         => $fakultas,
                 "prodi"         => $prodi,
             ]);
@@ -367,6 +371,7 @@ class UserController extends Controller
         $confPass   = $request->input('conf_password');
         $roles      = $request->input('roles');
         $size      = $request->input('size');
+        $upload_size      = $request->input('upload_size');
         $fakultas = $request->input('fakultas');
         $prodi = $request->input('prodi');
       
@@ -380,6 +385,7 @@ class UserController extends Controller
             'username'      => 'required|string|min:5|max:20',
             'nidn'      => 'required|string|min:5|max:20',
             'size'     => 'required|numeric',
+            'upload_size'     => 'required|numeric',
             'password'      => 'nullable|string|min:8|max:20',
             'conf_password' => 'nullable|string|min:8|max:20',
             'roles'         => 'required|numeric',
@@ -394,6 +400,7 @@ class UserController extends Controller
                 'username'      => 'required|string|min:5|max:20',
                 'nidn'      => 'required|string|min:5|max:20',
                 'size'     => 'required|numeric',
+                'upload_size'     => 'required|numeric',
                 'password'      => 'nullable|string|min:8|max:20',
                 'conf_password' => 'nullable|string|min:8|max:20',
                 'roles'         => 'required|numeric',
@@ -429,6 +436,7 @@ class UserController extends Controller
                 if ($nidn) { $updateData['nidn'] = $nidn; }
                 if ($roles) { $updateData['roles'] = $roles; }
                 if ($size) { $updateData['size'] = $size; }
+                if ($upload_size) { $updateData['upload_size'] = $upload_size; }
                 if ($fakultas) { $updateData['fakultas'] = $fakultas; }
                 if ($prodi) { $updateData['prodi'] = $prodi; }
             }
@@ -616,11 +624,11 @@ class UserController extends Controller
             'judul_data' => 'required|string|max:255',
             // 'fakultas' => 'required|string|max:255',
             // 'prodi' => 'required|string|max:255',
-            'tahun_data' => 'required|numeric',
+            'tahun_data' => 'required',
             'semester' => 'required|in:1,2,3', // assuming 1 = Awal, 2 = Akhir, 3 = Pendek
             'jenis_data' => 'required|in:1,2,3,4,5', // assuming 1 = Pengabdian, etc.
             'permission' => 'required|in:1,2', // assuming 1 = Pengabdian, etc.
-            'file' => 'required|file|max:10240', // max 10 MB, adapt as needed
+            'file' => 'required|file', // max 10 MB, adapt as needed
         ]);
       
       
@@ -756,4 +764,87 @@ class UserController extends Controller
       
 
     }
+
+    public function getRecentFile()
+    {
+        $user = Auth::user();
+        $userId = $user->id;
+        $isAdmin = $user->roles == 1;
+    
+        $penunjangs = DB::table('penunjangs')
+            ->select(
+                'penunjangs.id',
+                'penunjangs.user_id',
+                'penunjangs.created_at',
+                'penunjangs.judul_data',
+                'users.username',
+                DB::raw("'penunjang' as sumber")
+            )
+            ->join('users', 'users.id', '=', 'penunjangs.user_id')
+            ->when(!$isAdmin, function ($query) use ($userId) {
+                return $query->where('penunjangs.user_id', $userId);
+            })
+            ->whereNull('penunjangs.deleted_at');
+    
+        $pengabdians = DB::table('pengabdians')
+            ->select(
+                'pengabdians.id',
+                'pengabdians.user_id',
+                'pengabdians.created_at',
+                'pengabdians.judul_data',
+                'users.username',
+                DB::raw("'pengabdian' as sumber")
+            )
+            ->join('users', 'users.id', '=', 'pengabdians.user_id')
+            ->when(!$isAdmin, function ($query) use ($userId) {
+                return $query->where('pengabdians.user_id', $userId);
+            })
+            ->whereNull('pengabdians.deleted_at');
+    
+        $pribadis = DB::table('pribadis')
+            ->select(
+                'pribadis.id',
+                'pribadis.user_id',
+                'pribadis.created_at',
+                'pribadis.judul_data',
+                'users.username',
+                DB::raw("'pribadi' as sumber")
+            )
+            ->join('users', 'users.id', '=', 'pribadis.user_id')
+            ->when(!$isAdmin, function ($query) use ($userId) {
+                return $query->where('pribadis.user_id', $userId);
+            })
+            ->whereNull('pribadis.deleted_at');
+    
+        $pengajarans = DB::table('pengajarans')
+            ->select(
+                'pengajarans.id',
+                'pengajarans.user_id',
+                'pengajarans.created_at',
+                'pengajarans.judul_data',
+                'users.username',
+                DB::raw("'pengajaran' as sumber")
+            )
+            ->join('users', 'users.id', '=', 'pengajarans.user_id')
+            ->when(!$isAdmin, function ($query) use ($userId) {
+                return $query->where('pengajarans.user_id', $userId);
+            })
+            ->whereNull('pengajarans.deleted_at');
+    
+        // Union
+        $union = $penunjangs
+            ->unionAll($pengabdians)
+            ->unionAll($pribadis)
+            ->unionAll($pengajarans);
+    
+        // Final result
+        $latest = DB::table(DB::raw("({$union->toSql()}) as combined"))
+            ->mergeBindings($union)
+            ->orderByDesc('created_at')
+            ->limit(3)
+            ->get();
+    
+        return $latest;
+    }
+    
 }

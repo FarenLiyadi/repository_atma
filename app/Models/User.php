@@ -29,6 +29,7 @@ class User extends Authenticatable
         'prodi',
         'password',
         'size',
+        'upload_size',
         'usage',
     ];
 

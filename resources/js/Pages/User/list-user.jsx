@@ -253,6 +253,9 @@ export default function listUser({ auth }) {
                                             Free (GB)
                                         </th>
                                         <th className="border border-slate-600 text-xl py-2">
+                                            Upload Size (MB)
+                                        </th>
+                                        <th className="border border-slate-600 text-xl py-2">
                                             Tgl. dibuat
                                         </th>
                                         <th className="border border-slate-600 text-xl py-2">
@@ -304,6 +307,9 @@ export default function listUser({ auth }) {
                                                 </td>
                                                 <td className="text-center border border-slate-700 px-3">
                                                     {user.size - user.usage} GB
+                                                </td>
+                                                <td className="text-center border border-slate-700 px-3">
+                                                    {user.upload_size} Mb
                                                 </td>
                                                 <td className="text-center border border-slate-700 px-3">
                                                     {new Date(

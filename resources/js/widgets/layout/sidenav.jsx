@@ -100,8 +100,11 @@ export function Sidenav() {
         >
             <div className={`relative`}>
                 <div to="" className=" px-8 text-center mx-auto w-max">
-                    <div className=" lg:pt-8 xl:pt-4 flex w-full justify-center">
+                    <div className=" lg:pt-8 xl:pt-4 flex w-full justify-center  items-center gap-2">
                         <img src="/img/uajm.png" className="w-20 " alt="" />
+                        <p className="text-black font-bold ">
+                            Repository - UAJM
+                        </p>
                     </div>
                 </div>
                 <IconButton

@@ -60,6 +60,8 @@ export function Home({
     calculate,
     calculate2,
     drive,
+    lastFile,
+    upload_size,
 }) {
     // console.log(drive);
 
@@ -254,13 +256,16 @@ export function Home({
     };
 
     return (
-        <div className="mt-12 h-screen">
+        <div className=" h-screen mb-12">
             {roles != 1 && (
-                <div className="mb-12 grid gap-y-10 gap-x-6 ">
+                <div className=" grid gap-y-10 gap-x-6 ">
                     <div className="p-4 bg-white shadow-md rounded-xl w-full">
                         <h2 className="text-lg font-semibold mb-4">
                             Detail Penyimpanan
                         </h2>
+                        <Typography>
+                            Max Upload Size : {upload_size} Mb
+                        </Typography>
                         <Typography>Size : {size} GB</Typography>
                         <Typography>Usage : {usage} GB</Typography>
                         <Typography>Free Space : {size - usage} GB</Typography>
@@ -278,6 +283,7 @@ export function Home({
                     </div>
                 </div>
             )}
+
             <div className="mb-12 grid gap-y-10 gap-x-6  md:grid-cols-2 xl:grid-cols-4">
                 {roles == 1
                     ? statisticsCardsData.map(
@@ -299,6 +305,53 @@ export function Home({
                           )
                       )
                     : ""}
+            </div>
+            <div className="mb-18 ">
+                <div className="p-4 bg-white shadow-md rounded-xl w-full">
+                    <h2 className="text-lg font-semibold mb-4">
+                        Last File Upload
+                    </h2>
+
+                    <table className="w-full">
+                        <thead className="border">
+                            <th className="border ">Username</th>
+                            <th className="border ">Judul</th>
+                            <th className="border ">Kategori</th>
+                            <th className="border ">Tanggal upload</th>
+                        </thead>
+                        <tbody className="border">
+                            {lastFile
+                                ? lastFile.map((e, index) => {
+                                      return (
+                                          <tr>
+                                              <td className="text-center w-1/4 border">
+                                                  {e.username}
+                                              </td>
+                                              <td className="border text-center w-1/4 px-2">
+                                                  {e.judul_data}
+                                              </td>
+                                              <td className="border text-center w-1/4 px-2">
+                                                  {e.sumber}
+                                              </td>
+                                              <td className="px-2 w-1/4 text-center">
+                                                  {new Date(
+                                                      e.created_at
+                                                  ).toLocaleDateString(
+                                                      "id-ID",
+                                                      {
+                                                          day: "2-digit",
+                                                          month: "long",
+                                                          year: "numeric",
+                                                      }
+                                                  )}
+                                              </td>
+                                          </tr>
+                                      );
+                                  })
+                                : ""}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );
