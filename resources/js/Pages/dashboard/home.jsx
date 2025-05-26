@@ -212,28 +212,28 @@ export function Home({
             {
                 data: data.map((item) => item.size),
                 backgroundColor: [
-                    "#FF6384",
-                    "#36A2EB",
-                    "#FFA725",
-                    "#80CBC4",
-                    "#D3E671",
-                    "#2C3930",
-                    "#FCC6FF",
-                    "#16C47F",
-                    "#8D0B41",
-                    "#F26B0F",
+                    "#4B0082", // Indigo
+                    "#00CED1", // Dark Turquoise
+                    "#FF4500", // Orange Red
+                    "#6A5ACD", // Slate Blue
+                    "#32CD32", // Lime Green
+                    "#FFD700", // Gold
+                    "#DC143C", // Crimson
+                    "#00BFFF", // Deep Sky Blue
+                    "#FF69B4", // Hot Pink
+                    "#228B22", // Forest Green
                 ], // Define colors
                 hoverBackgroundColor: [
-                    "#FF6384",
-                    "#36A2EB",
-                    "#FFA725",
-                    "#80CBC4",
-                    "#D3E671",
-                    "#2C3930",
-                    "#FCC6FF",
-                    "#16C47F",
-                    "#8D0B41",
-                    "#F26B0F",
+                    "#4B0082", // Indigo
+                    "#00CED1", // Dark Turquoise
+                    "#FF4500", // Orange Red
+                    "#6A5ACD", // Slate Blue
+                    "#32CD32", // Lime Green
+                    "#FFD700", // Gold
+                    "#DC143C", // Crimson
+                    "#00BFFF", // Deep Sky Blue
+                    "#FF69B4", // Hot Pink
+                    "#228B22", // Forest Green
                 ],
             },
         ],
