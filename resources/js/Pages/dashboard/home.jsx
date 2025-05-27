@@ -63,8 +63,8 @@ export function Home({
     lastFile,
     upload_size,
 }) {
-    // console.log(drive);
-
+    console.log(size);
+    const convert = size ? size * 1024 : 0;
     const statisticsCardsData = [
         {
             color: "gray",
@@ -138,7 +138,9 @@ export function Home({
         labels: data2.map((item) => item.type),
         datasets: [
             {
-                data: data2.map((item) => item.size),
+                data: data2.map((item) =>
+                    ((item.size * 100) / convert).toFixed(3)
+                ),
                 backgroundColor: [
                     "#FF6384",
                     "#36A2EB",
@@ -172,6 +174,7 @@ export function Home({
         plugins: {
             legend: {
                 display: false,
+                formatter: (value) => `${value.toFixed(3)}%`,
                 labels: {
                     color: "white",
                 },
@@ -179,6 +182,11 @@ export function Home({
             tooltip: {
                 titleColor: "white", // Set tooltip title color
                 bodyColor: "white", // Set tooltip body text color
+                callbacks: {
+                    label: function (context) {
+                        return `${context.raw.toFixed(3)}%`;
+                    },
+                },
             },
             title: {
                 display: false,
@@ -276,8 +284,12 @@ export function Home({
                                 <Pie data={chartData} options={options} />
                             </div>
                             <div className="w-1/2">
-                                <Typography>Per Kategori (MB)</Typography>
-                                <Bar data={chartData2} options={options2} />
+                                <Typography>Per Kategori (%)</Typography>
+                                <Bar
+                                    data={chartData2}
+                                    options={options2}
+                                    plugins={[ChartDataLabels]}
+                                />
                             </div>
                         </div>
                     </div>
