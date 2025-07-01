@@ -325,6 +325,29 @@ export function Sidenav() {
                             </li>
                         </li>
                     )}
+                    <li key="list-pengajaran">
+                        <a href="/list-pengajaran">
+                            <Button
+                                variant={
+                                    route().current("list.pengajaran.view") ||
+                                    route().current("update.pengajaran.view")
+                                        ? "gradient"
+                                        : "text"
+                                }
+                                color={"blue"}
+                                className="flex items-center gap-4 px-4 capitalize"
+                                fullWidth
+                            >
+                                <FaDatabase className="w-5 h-5 text-inherit" />
+                                <Typography
+                                    color="inherit"
+                                    className="font-medium capitalize"
+                                >
+                                    Pendidikan & pengajaran
+                                </Typography>
+                            </Button>
+                        </a>
+                    </li>
                     <li key="list-penelitian">
                         <a href="/list-penelitian">
                             <Button
@@ -343,7 +366,7 @@ export function Sidenav() {
                                     color="inherit"
                                     className="font-medium capitalize"
                                 >
-                                    Data penelitian
+                                    Penelitian
                                 </Typography>
                             </Button>
                         </a>
@@ -366,30 +389,7 @@ export function Sidenav() {
                                     color="inherit"
                                     className="font-medium capitalize"
                                 >
-                                    Data pengabdian
-                                </Typography>
-                            </Button>
-                        </a>
-                    </li>
-                    <li key="list-pengajaran">
-                        <a href="/list-pengajaran">
-                            <Button
-                                variant={
-                                    route().current("list.pengajaran.view") ||
-                                    route().current("update.pengajaran.view")
-                                        ? "gradient"
-                                        : "text"
-                                }
-                                color={"blue"}
-                                className="flex items-center gap-4 px-4 capitalize"
-                                fullWidth
-                            >
-                                <FaDatabase className="w-5 h-5 text-inherit" />
-                                <Typography
-                                    color="inherit"
-                                    className="font-medium capitalize"
-                                >
-                                    Data pengajaran
+                                    Pengabdian
                                 </Typography>
                             </Button>
                         </a>
@@ -413,7 +413,7 @@ export function Sidenav() {
                                     color="inherit"
                                     className="font-medium capitalize"
                                 >
-                                    Data penunjang
+                                    Penunjang
                                 </Typography>
                             </Button>
                         </a>
@@ -436,7 +436,7 @@ export function Sidenav() {
                                     color="inherit"
                                     className="font-medium capitalize"
                                 >
-                                    Data pribadi
+                                    Pribadi
                                 </Typography>
                             </Button>
                         </a>

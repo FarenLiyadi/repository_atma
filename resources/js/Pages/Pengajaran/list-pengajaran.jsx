@@ -329,13 +329,13 @@ export default function listpengajaran({ auth }) {
                 </form>
             </Dialog>
             <NewAuthenticated>
-                <Head title="Pengajaran" />
+                <Head title="Pendidikan & Pengajaran" />
 
                 <div className="py-5">
                     <div className="mx-auto sm:px-6 lg:px-8 space-y-6">
                         <div className="flex flex-col p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                             <h1 className="md:text-right text-center text-3xl font-bold">
-                                Data Pengajaran
+                                Pendidikan & Pengajaran
                             </h1>
                             <div className="">
                                 <label className="text-dark font-bold text-2xl">
@@ -411,7 +411,7 @@ export default function listpengajaran({ auth }) {
                     <div className="mx-auto sm:px-6 lg:px-8 space-y-6">
                         <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                             <h2 className="text-3xl text-dark font-extrabold">
-                                Daftar pengajaran
+                                Daftar Pendidikan & Pengajaran
                             </h2>
                             <div className="pt-4 w-full ">
                                 <table className="table-auto text-dark w-full border-collapse border border-slate-500">

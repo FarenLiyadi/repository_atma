@@ -11,9 +11,11 @@ export default function UploadData({ auth }) {
         const file = event.target.files[0];
         if (file) {
             const maxSize = auth.user.upload_size * 1024 * 1024;
+            console.log(maxSize);
+            console.log(file.size);
 
             if (file.size > maxSize) {
-                alert("Ukuran file maksimal 10MB.");
+                alert("Ukuran file tidak boleh melebihi batas maksimal.");
                 event.target.value = ""; // reset input
                 return;
             }
@@ -29,6 +31,7 @@ export default function UploadData({ auth }) {
     // const [fakultas, setfakultas] = useState(null);
     // const [prodi, setprodi] = useState(null);
     const [permission, setpermission] = useState(null);
+    const [loading, setisloading] = useState(false);
     const [errors, setErrors] = useState({});
 
     function change_semester(value) {
@@ -49,44 +52,31 @@ export default function UploadData({ auth }) {
 
     async function submitHandler(e) {
         e.preventDefault();
-
+        setisloading(true);
         let errors = {};
         if (!jenisdata) {
             errors.jenisdata = "Harus Memilih jenis data.";
         }
-        // if (!fakultas) {
-        //     errors.fakultas = "Harus Memilih fakultas";
-        // }
-        // if (auth.user.roles == "2") {
-        //     if (!prodi) {
-        //         errors.prodi = "Harus Memilih prodi.";
-        //     }
-        // }
-
         if (!judul_data.trim()) {
             errors.judul_data = "Judul data harus diisi.";
         }
         if (!tahun_data.trim()) {
             errors.tahun_data = "Tahun data harus diisi.";
         }
-
         if (!semester) {
             errors.semester = "Harus Memilih semester.";
         }
-
-        if (selectedFile.size > 10 * 1024 * 1024) {
-            // File size > 10MB
-            errors.selectedFile = "Ukuran file tidak boleh melebihi 10 MB.";
-        }
+        // if (selectedFile.size > 10 * 1024 * 1024) {
+        //     errors.selectedFile = "Ukuran file tidak boleh melebihi 10 MB.";
+        // }
 
         if (Object.keys(errors).length === 0) {
-            // const data = {
-            //     judul_data: judul_data,
-            //     tahun_data: tahun_data,
-            //     semester: semester,
-            //     jenis_data: jenisdata,
-            //     selected_file: selectedFile,
-            // };
+            const isValidTahunData = /^(\d{4})\/(\d{4})$/.test(tahun_data);
+            if (!isValidTahunData) {
+                alert("Format tahun harus seperti 2023/2024");
+                return;
+            }
+
             const formData = new FormData();
             formData.append("judul_data", judul_data);
             formData.append("tahun_data", tahun_data);
@@ -97,21 +87,34 @@ export default function UploadData({ auth }) {
             formData.append("permission", permission);
             formData.append("file", selectedFile);
 
-            console.log("Submit", formData);
+            const controller = new AbortController(); // 🛑 Buat controller
+            const timeoutId = setTimeout(() => {
+                controller.abort(); // Batalkan upload
 
-            const isValidTahunData = /^(\d{4})\/(\d{4})$/.test(tahun_data);
-
-            if (!isValidTahunData) {
-                alert("Format tahun harus seperti 2023/2024");
+                toast.error(
+                    "⏱️ Upload dibatalkan karena melebihi waktu 1 menit",
+                    {
+                        position: "top-right",
+                        autoClose: 3000,
+                        closeOnClick: true,
+                        draggable: true,
+                        theme: "light",
+                    }
+                );
+                setisloading(false);
                 return;
-            }
+            }, 60 * 1000); // 60 detik
 
             try {
                 const response = await axios.post("/upload-data", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
+                    signal: controller.signal, // 🔌 Hubungkan dengan axios
                 });
+
+                clearTimeout(timeoutId); // ✅ Clear timeout kalau berhasil
+
                 if (response.data.code !== 0) {
                     toast.error(response.data.msg, {
                         position: "top-right",
@@ -120,9 +123,10 @@ export default function UploadData({ auth }) {
                         draggable: true,
                         theme: "light",
                     });
+                    setisloading(false);
                     return;
                 }
-                // Untuk Nofitikasi
+
                 localStorage.setItem(
                     "notif",
                     JSON.stringify({
@@ -133,19 +137,36 @@ export default function UploadData({ auth }) {
 
                 window.location.href = "/dashboard";
             } catch (error) {
-                toast.error("Something Went Wrong!", {
-                    position: "top-right",
-                    autoClose: 3000,
-                    closeOnClick: true,
-                    draggable: true,
-                    theme: "light",
-                });
+                if (error.name === "AbortError") {
+                    console.log(
+                        "❌ Upload dibatalkan secara otomatis setelah 1 menit."
+                    );
+                    setisloading(false);
+                } else {
+                    toast.error("Something Went Wrong!", {
+                        position: "top-right",
+                        autoClose: 3000,
+                        closeOnClick: true,
+                        draggable: true,
+                        theme: "light",
+                    });
+                    setisloading(false);
+                }
             }
         } else {
             setErrors(errors);
+            setisloading(false);
         }
     }
-
+    const generateTahunAjaran = () => {
+        const start = 2007;
+        const end = 2025;
+        const list = [];
+        for (let i = start; i <= end; i++) {
+            list.push(`${i}/${i + 1}`);
+        }
+        return list;
+    };
     return (
         <NewAuthenticated>
             <Head title="Upload Data" />
@@ -223,16 +244,16 @@ export default function UploadData({ auth }) {
                                                 <option disabled selected value>
                                                     Pilih jenis data
                                                 </option>
-
+                                                <option value="5">
+                                                    Pendidikan & Pengajaran
+                                                </option>
                                                 <option value="2">
                                                     Penelitian
                                                 </option>
                                                 <option value="1">
                                                     Pengabdian
                                                 </option>
-                                                <option value="5">
-                                                    Pengajaran
-                                                </option>
+
                                                 <option value="3">
                                                     Penunjang
                                                 </option>
@@ -303,10 +324,8 @@ export default function UploadData({ auth }) {
                                         >
                                             Tahun Data
                                         </label>
-                                        <input
-                                            type="text"
+                                        <select
                                             id="tahun_data"
-                                            placeholder="Mis. 2023/2024"
                                             className="src_change w-full md:w-96 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             value={tahun_data}
                                             onChange={(event) =>
@@ -315,7 +334,21 @@ export default function UploadData({ auth }) {
                                                 )
                                             }
                                             required
-                                        />
+                                        >
+                                            <option value="">
+                                                Pilih Tahun
+                                            </option>
+                                            {generateTahunAjaran().map(
+                                                (tahun) => (
+                                                    <option
+                                                        key={tahun}
+                                                        value={tahun}
+                                                    >
+                                                        {tahun}
+                                                    </option>
+                                                )
+                                            )}
+                                        </select>
                                     </div>
 
                                     <div>
@@ -401,10 +434,13 @@ export default function UploadData({ auth }) {
 
                                     <div className="pt-5 w-full md:col-span-2">
                                         <button
+                                            disabled={setisloading}
                                             type="submit"
                                             className="text-white w-full bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                                         >
-                                            Upload Data
+                                            {loading
+                                                ? "progres"
+                                                : "Upload Data"}
                                         </button>
                                     </div>
                                 </div>

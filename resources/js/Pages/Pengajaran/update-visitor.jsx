@@ -230,7 +230,7 @@ export default function updateVisitor({ auth, detailPenelitian, people }) {
                                                 htmlFor="judul_data"
                                                 className="block mb-2 font-medium text-gray-900 dark:text-white"
                                             >
-                                                Jumlah percobaan
+                                                Limit
                                             </label>
                                             <input
                                                 type="number"

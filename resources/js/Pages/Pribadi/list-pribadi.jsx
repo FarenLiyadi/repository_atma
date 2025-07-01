@@ -332,7 +332,7 @@ export default function listpribadi({ auth }) {
                     <div className="mx-auto sm:px-6 lg:px-8 space-y-6">
                         <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                             <h1 className="text-right text-3xl font-bold">
-                                Data Pribadi
+                                Pribadi
                             </h1>
                             <div>
                                 <label className="text-dark font-bold text-2xl">

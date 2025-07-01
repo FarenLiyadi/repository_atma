@@ -331,7 +331,7 @@ export default function listpenunjang({ auth }) {
                     <div className="mx-auto sm:px-6 lg:px-8 space-y-6">
                         <div className="flex flex-col p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                             <h1 className="md:text-right text-center text-3xl font-bold">
-                                Data Penunjang
+                                Penunjang
                             </h1>
                             <div className="">
                                 <label className="text-dark font-bold text-2xl">
